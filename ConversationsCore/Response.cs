@@ -8,10 +8,12 @@ namespace ConversationsCore
 {
     public class Response
     {
-        public int id { get; set; }
 
-        public string WaveFilename { get; set; }
-
+        /// <summary>
+        /// Collection of wave files that can be played for this response.
+        /// Assume any can be picked at random? Or should we divide by RelationshipStrength?
+        /// </summary>
+        public List<ResponseFile> ResponseFileList { get; set; }
 
     }
 }
