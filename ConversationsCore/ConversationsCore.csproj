@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="Character.cs" />
     <Compile Include="Intent.cs" />
+    <Compile Include="Interfaces\IResponseCoordinatorService.cs" />
+    <Compile Include="Interfaces\ISpeechToTextService.cs" />
+    <Compile Include="Interfaces\ITextToSpeechService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="ResponseFile.cs" />
