@@ -8,6 +8,8 @@ namespace ConversationsCore.Interfaces
 {
     public interface ICharacterCoordinatorService
     {
+        IAudioControllerService AudioController { get; set; }
+
         event EventHandler<Character> ConversationStartedEvent;
 
         event EventHandler<Character> ConversationEndedEvent;

@@ -48,9 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\SampleAggregator.cs" />
     <Compile Include="DataObjects\Character.cs" />
     <Compile Include="DataObjects\ConversationsErrorArgs.cs" />
     <Compile Include="DataObjects\Meaning.cs" />
+    <Compile Include="Interfaces\IAudioControllerService.cs" />
     <Compile Include="Interfaces\ICharacterCoordinatorService.cs" />
     <Compile Include="Interfaces\IRecordAudioService.cs" />
     <Compile Include="Interfaces\IResponseFinderService.cs" />

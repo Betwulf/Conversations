@@ -12,11 +12,15 @@ namespace ConversationsCore.Interfaces
     {
         event EventHandler<Stream> StartedRecordingEvent;
 
+        event EventHandler<Stream> PartialRecordingEvent;
+
         event EventHandler<Stream> FinishedRecordingEvent;
 
         event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
 
-        bool StartRecordingAudioAsync(Character aCharacter);
+        bool StartRecordingAudioAsync();
+
+        bool StopRecordingAudioAsync();
 
     }
 }

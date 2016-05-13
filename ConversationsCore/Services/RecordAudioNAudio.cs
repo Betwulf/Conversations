@@ -8,6 +8,8 @@ using ConversationsCore.DataObjects;
 using ConversationsCore.Interfaces;
 using NAudio;
 using NAudio.Wave;
+using NAudio.Mixer;
+using ConversationsCore.Audio;
 
 namespace ConversationsCore.Services
 {
@@ -16,52 +18,46 @@ namespace ConversationsCore.Services
         public event EventHandler<Stream> FinishedRecordingEvent;
         public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
         public event EventHandler<Stream> StartedRecordingEvent;
-
-        WaveIn waveSource = null;
-        WaveFileWriter waveFile = null;
+        public event EventHandler<Stream> PartialRecordingEvent;
 
 
-        public bool StartRecordingAudioAsync(Character aCharacter)
+
+        WaveIn waveIn;
+        readonly SampleAggregator sampleAggregator;
+        UnsignedMixerControl volumeControl;
+        double desiredVolume = 100;
+        WaveFileWriter writer;
+
+        public bool IsRecording { get; set; }
+        public WaveFormat RecordingFormat { get; set; }
+
+        public RecordAudioNAudio()
         {
-            waveSource = new WaveIn();
-            waveSource.WaveFormat = new WaveFormat(44100, 1);
+            sampleAggregator = new SampleAggregator();
+            RecordingFormat = new WaveFormat(44100, 1);
+        }
 
-            waveSource.DataAvailable += new EventHandler<WaveInEventArgs>(OnDataAvailable);
-            waveSource.RecordingStopped += new EventHandler<StoppedEventArgs>(OnRecordingStopped);
-            waveFile = new WaveFileWriter(@"C:\Temp\Test0001.wav", waveSource.WaveFormat);
 
-            waveSource.StartRecording();
+        public bool StartRecordingAudioAsync()
+        {
+            if (IsRecording)
+            {
+                throw new InvalidOperationException("Can't begin monitoring while we are in this state: " + recordingState.ToString());
+            }
+            waveIn = new WaveIn();
+            waveIn.DeviceNumber = recordingDevice;
+            waveIn.DataAvailable += OnDataAvailable;
+            waveIn.RecordingStopped += OnRecordingStopped;
+            waveIn.WaveFormat = recordingFormat;
+            waveIn.StartRecording();
+            TryGetVolumeControl();
+            IsRecording = true;
+        }
 
+        public bool StopRecordingAudioAsync()
+        {
             return true;
         }
-
-
-        private void OnDataAvailable(object sender, WaveInEventArgs args)
-        {
-            if (waveFile != null)
-            {
-                waveFile.Write(args.Buffer, 0, args.BytesRecorded);
-                waveFile.Flush();
-            }
-
-        }
-
-
-        private void OnRecordingStopped(object sender, StoppedEventArgs args)
-        {
-            if (waveSource != null)
-            {
-                waveSource.Dispose();
-                waveSource = null;
-            }
-
-            if (waveFile != null)
-            {
-                waveFile.Dispose();
-                waveFile = null;
-            }
-        }
-
-
+        
     }
 }
