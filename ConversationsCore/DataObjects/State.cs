@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConversationsCore
+namespace ConversationsCore.DataObjects
 {
     public class State
     {
@@ -14,7 +14,7 @@ namespace ConversationsCore
 
         public Stack<State> FallbackStateStack { get; set; }
 
-        public Dictionary<Intent, Response> IntentMap { get; set; }
+        public Dictionary<Meaning, Response> IntentMap { get; set; }
 
     }
 }

@@ -1,12 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.ProjectOxford.SpeechRecognition;
+using System.IO;
+using ConversationsCore.DataObjects;
+
 
 namespace ConversationsCore.Interfaces
 {
-    interface ITextToSpeechService
+    public interface ITextToSpeechService
     {
+        event EventHandler<Character> TextToSpeechPlayCompleteEvent;
+
+        event EventHandler<ConversationsErrorArgs> TextToSpeechErrorEvent;
+
+        bool StartPlayingResponseAudioAsync(Response aResponse, Character aCharacter);
+
     }
 }

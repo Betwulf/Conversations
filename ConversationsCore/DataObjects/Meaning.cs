@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConversationsCore
+namespace ConversationsCore.DataObjects
 {
-    public class Intent
+    public class Meaning
     {
-        public int id { get; set; }
-
         public string Title { get; set; }
 
         /// <summary>
