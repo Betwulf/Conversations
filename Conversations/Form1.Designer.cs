@@ -28,20 +28,77 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.btnStart = new System.Windows.Forms.Button();
+            this.txtOutput = new System.Windows.Forms.TextBox();
+            this.btnStopConversation = new System.Windows.Forms.Button();
+            this.lblLight = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(12, 12);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(118, 23);
+            this.btnStart.TabIndex = 0;
+            this.btnStart.Text = "Start Conversation";
+            this.btnStart.UseVisualStyleBackColor = true;
+            // 
+            // txtOutput
+            // 
+            this.txtOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOutput.Location = new System.Drawing.Point(155, 12);
+            this.txtOutput.Multiline = true;
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.Size = new System.Drawing.Size(270, 486);
+            this.txtOutput.TabIndex = 1;
+            // 
+            // btnStopConversation
+            // 
+            this.btnStopConversation.Location = new System.Drawing.Point(12, 85);
+            this.btnStopConversation.Name = "btnStopConversation";
+            this.btnStopConversation.Size = new System.Drawing.Size(118, 23);
+            this.btnStopConversation.TabIndex = 2;
+            this.btnStopConversation.Text = "End Conversation";
+            this.btnStopConversation.UseVisualStyleBackColor = true;
+            // 
+            // lblLight
+            // 
+            this.lblLight.AutoSize = true;
+            this.lblLight.BackColor = System.Drawing.Color.Red;
+            this.lblLight.Location = new System.Drawing.Point(63, 51);
+            this.lblLight.Name = "lblLight";
+            this.lblLight.Size = new System.Drawing.Size(10, 13);
+            this.lblLight.TabIndex = 3;
+            this.lblLight.Text = " ";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(653, 477);
+            this.ClientSize = new System.Drawing.Size(437, 510);
+            this.Controls.Add(this.lblLight);
+            this.Controls.Add(this.btnStopConversation);
+            this.Controls.Add(this.txtOutput);
+            this.Controls.Add(this.btnStart);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Conversations";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.TextBox txtOutput;
+        private System.Windows.Forms.Button btnStopConversation;
+        private System.Windows.Forms.Label lblLight;
     }
 }
 

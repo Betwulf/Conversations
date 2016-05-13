@@ -52,6 +52,7 @@
     <Compile Include="DataObjects\ConversationsErrorArgs.cs" />
     <Compile Include="DataObjects\Meaning.cs" />
     <Compile Include="Interfaces\ICharacterCoordinatorService.cs" />
+    <Compile Include="Interfaces\IRecordAudioService.cs" />
     <Compile Include="Interfaces\IResponseFinderService.cs" />
     <Compile Include="Interfaces\ISpeechToTextService.cs" />
     <Compile Include="Interfaces\ITextToSpeechService.cs" />
@@ -59,6 +60,8 @@
     <Compile Include="DataObjects\Response.cs" />
     <Compile Include="DataObjects\ResponseFile.cs" />
     <Compile Include="DataObjects\State.cs" />
+    <Compile Include="Services\RecordAudioNAudio.cs" />
+    <Compile Include="Services\SpeechToTextBasic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
