@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.ProjectOxford.SpeechRecognition;
 using System.IO;
 using ConversationsCore.DataObjects;
 

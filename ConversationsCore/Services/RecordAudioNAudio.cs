@@ -19,8 +19,7 @@ namespace ConversationsCore.Services
         public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
         public event EventHandler<Stream> StartedRecordingEvent;
         public event EventHandler<Stream> PartialRecordingEvent;
-
-
+        public event EventHandler<string> MessageEvent;
 
         WaveIn waveIn;
         readonly SampleAggregator sampleAggregator;
@@ -44,21 +43,23 @@ namespace ConversationsCore.Services
             {
                 throw new InvalidOperationException("FAIL - Already recording");
             }
-            waveIn = new WaveIn();
             
             if (WaveIn.DeviceCount < 1)
             {
                 throw new InvalidOperationException("Cant find a device...");
             }
-            Console.WriteLine($"Audio: {WaveIn.GetCapabilities(0).ProductName}");
+            MessageEvent(this, $"DeviceCount: {WaveIn.DeviceCount}");
+            MessageEvent(this, $"Audio Device: {WaveIn.GetCapabilities(0).ProductName}");
+            waveIn = new WaveIn();
+            waveIn.WaveFormat = RecordingFormat;
             waveIn.DeviceNumber = 0;
             waveIn.DataAvailable += OnDataAvailable;
             waveIn.RecordingStopped += OnRecordingStopped;
-            waveIn.WaveFormat = RecordingFormat;
             waveIn.StartRecording();
             TryGetVolumeControl();
+            writer = new WaveFileWriter(@"D:\test.wav", RecordingFormat);
             IsRecording = true;
-
+            StartedRecordingEvent(this, null);
             return true;
         }
 
@@ -116,6 +117,7 @@ namespace ConversationsCore.Services
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
+            MessageEvent(this, $"OnDataAvailable: {e.BytesRecorded}");
             byte[] buffer = e.Buffer;
             int bytesRecorded = e.BytesRecorded;
             WriteToFile(buffer, bytesRecorded);
@@ -131,9 +133,10 @@ namespace ConversationsCore.Services
 
         private void WriteToFile(byte[] buffer, int bytesRecorded)
         {
+            MessageEvent(this, $"WriteToFile: {bytesRecorded}");
             long maxFileLength = this.RecordingFormat.AverageBytesPerSecond * 60;
 
-            if (!IsRecording)
+            if (IsRecording)
             {
                 var toWrite = (int)Math.Min(maxFileLength - writer.Length, bytesRecorded);
                 if (toWrite > 0)

@@ -25,6 +25,12 @@ namespace Conversations
             audio.StartedRecordingEvent += OnStartedRecording;
             audio.PartialRecordingEvent += OnPartialRecording;
             audio.RecordAudioErrorEvent += OnAudioError;
+            audio.MessageEvent += OnMessage;
+        }
+
+        private void OnMessage(object sender, string e)
+        {
+            Message($"OnMessage: {e}");
         }
 
         private void OnAudioError(object sender, ConversationsErrorArgs e)
@@ -50,20 +56,20 @@ namespace Conversations
         private void btnStart_Click(object sender, EventArgs e)
         {
             lblLight.Visible = true;
+            btnStart.Enabled = false;
             audio.StartRecordingAudioAsync();
-
         }
 
         private void btnStopConversation_Click(object sender, EventArgs e)
         {
-            OnStop(sender, null);
+            audio.StopRecordingAudioAsync();
         }
 
         private void OnStop(object sender, Stream e)
         {
             Message("OnStop");
-            audio.StopRecordingAudioAsync();
             lblLight.Visible = false;
+            btnStart.Enabled = true;
         }
 
         private void Message(string aMessage)

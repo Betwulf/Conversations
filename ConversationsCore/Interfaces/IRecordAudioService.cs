@@ -18,6 +18,9 @@ namespace ConversationsCore.Interfaces
 
         event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
 
+        event EventHandler<string> MessageEvent;
+
+
         bool StartRecordingAudioAsync();
 
         bool StopRecordingAudioAsync();

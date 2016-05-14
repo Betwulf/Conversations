@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.ProjectOxford.SpeechRecognition;
 using System.IO;
 using ConversationsCore.DataObjects;
 
@@ -9,7 +8,7 @@ namespace ConversationsCore.Interfaces
     {
         event EventHandler<Meaning> SpeechToTextCompletedEvent;
 
-        event EventHandler<SpeechErrorEventArgs> SpeechToTextErrorEvent;
+        event EventHandler<string> SpeechToTextErrorEvent;
 
         bool StartProcessingAudioAsync(Stream audioStream, Character aCharacter);
     }
