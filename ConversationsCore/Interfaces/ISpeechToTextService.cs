@@ -10,6 +10,8 @@ namespace ConversationsCore.Interfaces
 
         event EventHandler<string> SpeechToTextErrorEvent;
 
-        bool StartProcessingAudioAsync(Stream audioStream, Character aCharacter);
+        bool StartProcessingAudioAsync(Character aCharacter);
+
+        void OnMoreAudio(byte[] aBuffer);
     }
 }

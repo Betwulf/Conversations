@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConversationsCore.Interfaces;
 
 namespace ConversationsCore.DataObjects
 {
-    public class Response
+    public class Response : IRepositoryObject
     {
 
         /// <summary>
@@ -14,6 +15,8 @@ namespace ConversationsCore.DataObjects
         /// Assume any can be picked at random? Or should we divide by RelationshipStrength?
         /// </summary>
         public List<ResponseFile> ResponseFileList { get; set; }
+
+        public string Id { get; set; }
 
     }
 }

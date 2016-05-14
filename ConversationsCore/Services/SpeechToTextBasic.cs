@@ -14,9 +14,11 @@ namespace ConversationsCore.Services
         public event EventHandler<Meaning> SpeechToTextCompletedEvent;
         public event EventHandler<string> SpeechToTextErrorEvent;
 
-        public bool StartProcessingAudioAsync(Stream audioStream, Character aCharacter)
+        public bool StartProcessingAudioAsync(Character aCharacter)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
