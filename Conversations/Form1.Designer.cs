@@ -43,6 +43,7 @@
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "Start Conversation";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // txtOutput
             // 
@@ -63,6 +64,7 @@
             this.btnStopConversation.TabIndex = 2;
             this.btnStopConversation.Text = "End Conversation";
             this.btnStopConversation.UseVisualStyleBackColor = true;
+            this.btnStopConversation.Click += new System.EventHandler(this.btnStopConversation_Click);
             // 
             // lblLight
             // 
@@ -73,6 +75,7 @@
             this.lblLight.Size = new System.Drawing.Size(10, 13);
             this.lblLight.TabIndex = 3;
             this.lblLight.Text = " ";
+            this.lblLight.Visible = false;
             // 
             // Form1
             // 
@@ -84,7 +87,7 @@
             this.Controls.Add(this.txtOutput);
             this.Controls.Add(this.btnStart);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Conversations";
             this.Load += new System.EventHandler(this.Form1_Load);

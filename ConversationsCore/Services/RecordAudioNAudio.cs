@@ -45,10 +45,12 @@ namespace ConversationsCore.Services
                 throw new InvalidOperationException("FAIL - Already recording");
             }
             waveIn = new WaveIn();
+            
             if (WaveIn.DeviceCount < 1)
             {
                 throw new InvalidOperationException("Cant find a device...");
             }
+            Console.WriteLine($"Audio: {WaveIn.GetCapabilities(0).ProductName}");
             waveIn.DeviceNumber = 0;
             waveIn.DataAvailable += OnDataAvailable;
             waveIn.RecordingStopped += OnRecordingStopped;
