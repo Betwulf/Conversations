@@ -14,6 +14,11 @@ namespace ConversationsCore.Services
         public event EventHandler<Meaning> SpeechToTextCompletedEvent;
         public event EventHandler<string> SpeechToTextErrorEvent;
 
+        public void OnMoreAudio(byte[] aBuffer)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool StartProcessingAudioAsync(Character aCharacter)
         {
             throw new NotImplementedException();
