@@ -38,7 +38,7 @@ namespace Conversations
             Message($"OnAudioError: {e.theException.Message}");
         }
 
-        private void OnPartialRecording(object sender, Stream e)
+        private void OnPartialRecording(object sender, byte[] e)
         {
             Message("OnPartialRecording");
         }

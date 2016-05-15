@@ -18,7 +18,7 @@ namespace ConversationsCore.Services
         public event EventHandler<Stream> FinishedRecordingEvent;
         public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
         public event EventHandler<Stream> StartedRecordingEvent;
-        public event EventHandler<Stream> PartialRecordingEvent;
+        public event EventHandler<byte[]> PartialRecordingEvent;
         public event EventHandler<string> MessageEvent;
 
         WaveIn waveIn;
@@ -117,7 +117,7 @@ namespace ConversationsCore.Services
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
-            MessageEvent(this, $"OnDataAvailable: {e.BytesRecorded}");
+            MessageEvent(this, $"OnDataAvailable: {e.BytesRecorded} - IsRecording: {IsRecording}");
             byte[] buffer = e.Buffer;
             int bytesRecorded = e.BytesRecorded;
             WriteToFile(buffer, bytesRecorded);
@@ -129,6 +129,8 @@ namespace ConversationsCore.Services
                 float sample32 = sample / 32768f;
                 sampleAggregator.Add(sample32);
             }
+
+            PartialRecordingEvent(this, buffer);
         }
 
         private void WriteToFile(byte[] buffer, int bytesRecorded)

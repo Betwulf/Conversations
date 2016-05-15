@@ -12,7 +12,7 @@ namespace ConversationsCore.Interfaces
     {
         event EventHandler<Stream> StartedRecordingEvent;
 
-        event EventHandler<Stream> PartialRecordingEvent;
+        event EventHandler<byte[]> PartialRecordingEvent;
 
         event EventHandler<Stream> FinishedRecordingEvent;
 
