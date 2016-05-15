@@ -6,7 +6,7 @@ namespace ConversationsCore.Interfaces
 {
     public interface ISpeechToTextService
     {
-        event EventHandler<Meaning> SpeechToTextCompletedEvent;
+        event EventHandler<string> SpeechToTextCompletedEvent;
 
         event EventHandler<string> SpeechToTextErrorEvent;
 

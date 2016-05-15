@@ -13,9 +13,13 @@ namespace ConversationsCore.DataObjects
 
         public string LUISAppId { get; set; }
 
-        public Stack<State> FallbackStateStack { get; set; }
+        public string FallbackStateId { get; set; }
 
-        public Dictionary<Meaning, Response> IntentMap { get; set; }
+        public List<IntentResponse> IntentMap { get; set; }
 
+        public State()
+        {
+            IntentMap = new List<IntentResponse>();
+        }
     }
 }

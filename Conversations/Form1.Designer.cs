@@ -33,6 +33,7 @@
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.btnStopConversation = new System.Windows.Forms.Button();
             this.lblLight = new System.Windows.Forms.Label();
+            this.btnEditData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStart
@@ -77,11 +78,22 @@
             this.lblLight.Text = " ";
             this.lblLight.Visible = false;
             // 
+            // btnEditData
+            // 
+            this.btnEditData.Location = new System.Drawing.Point(12, 475);
+            this.btnEditData.Name = "btnEditData";
+            this.btnEditData.Size = new System.Drawing.Size(118, 23);
+            this.btnEditData.TabIndex = 4;
+            this.btnEditData.Text = "Edit Data...";
+            this.btnEditData.UseVisualStyleBackColor = true;
+            this.btnEditData.Click += new System.EventHandler(this.btnEditData_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(437, 510);
+            this.Controls.Add(this.btnEditData);
             this.Controls.Add(this.lblLight);
             this.Controls.Add(this.btnStopConversation);
             this.Controls.Add(this.txtOutput);
@@ -102,6 +114,7 @@
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Button btnStopConversation;
         private System.Windows.Forms.Label lblLight;
+        private System.Windows.Forms.Button btnEditData;
     }
 }
 

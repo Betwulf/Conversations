@@ -77,5 +77,12 @@ namespace Conversations
             Console.WriteLine(aMessage);
             txtOutput.Text += aMessage + Environment.NewLine;
         }
+
+        private void btnEditData_Click(object sender, EventArgs e)
+        {
+            var form = new frmEditData();
+            form.ShowDialog();
+            
+        }
     }
 }

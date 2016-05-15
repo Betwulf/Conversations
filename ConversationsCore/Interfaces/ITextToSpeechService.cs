@@ -11,7 +11,7 @@ namespace ConversationsCore.Interfaces
 
         event EventHandler<ConversationsErrorArgs> TextToSpeechErrorEvent;
 
-        bool StartPlayingResponseAudioAsync(Response aResponse, Character aCharacter);
+        bool StartPlayingResponseAudioAsync(string aWaveFilename, Character aCharacter);
 
     }
 }

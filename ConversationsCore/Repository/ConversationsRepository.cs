@@ -7,20 +7,20 @@ using ConversationsCore.Interfaces;
 using ConversationsCore.DataObjects;
 
 
-namespace ConversationsCore
+namespace ConversationsCore.Repository
 {
     public class ConversationsRepository
     {
 
         public ConversationsClassRepository<Character> CharacterDB { get; set; }
 
-        public ConversationsClassRepository<Meaning> MeaningDB { get; set; }
-
-        public ConversationsClassRepository<Response> ResponseDB { get; set; }
-
-        public ConversationsClassRepository<State> StateDB { get; set; }
-
         public ConversationsClassRepository<Keys> KeysDB { get; set; }
+
+        public ConversationsRepository()
+        {
+            CharacterDB = new ConversationsClassRepository<Character>();
+            KeysDB = new ConversationsClassRepository<Keys>();
+        }
 
     }
 }

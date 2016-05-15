@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,8 +39,8 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SpeechClient, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Microsoft.ProjectOxford.SpeechRecognition-x64.0.4.10.1\lib\SpeechClient.dll</HintPath>
+    <Reference Include="SpeechClient, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Microsoft.ProjectOxford.SpeechRecognition-x86.0.4.10.1\lib\SpeechClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -54,12 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\SampleAggregator.cs" />
-    <Compile Include="ConversationsClassRepository.cs" />
-    <Compile Include="ConversationsRepository.cs" />
+    <Compile Include="DataObjects\IntentResponse.cs" />
+    <Compile Include="Repository\ConversationsClassRepository.cs" />
+    <Compile Include="Repository\ConversationsRepository.cs" />
     <Compile Include="DataObjects\Character.cs" />
     <Compile Include="DataObjects\ConversationsErrorArgs.cs" />
     <Compile Include="DataObjects\Keys.cs" />
-    <Compile Include="DataObjects\Meaning.cs" />
     <Compile Include="Interfaces\IAudioControllerService.cs" />
     <Compile Include="Interfaces\ICharacterCoordinatorService.cs" />
     <Compile Include="Interfaces\IRecordAudioService.cs" />
@@ -68,11 +69,11 @@
     <Compile Include="Interfaces\ISpeechToTextService.cs" />
     <Compile Include="Interfaces\ITextToSpeechService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataObjects\Response.cs" />
     <Compile Include="DataObjects\ResponseFile.cs" />
     <Compile Include="DataObjects\State.cs" />
     <Compile Include="Services\CharacterCoordinatorBasic.cs" />
     <Compile Include="Services\RecordAudioNAudio.cs" />
+    <Compile Include="Services\RepsonseFinder.cs" />
     <Compile Include="Services\SpeechToTextBasic.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using System.IO;
 using ConversationsCore.Interfaces;
 
-namespace ConversationsCore
+namespace ConversationsCore.Repository
 {
     public class ConversationsClassRepository<T> where T : IRepositoryObject
     {

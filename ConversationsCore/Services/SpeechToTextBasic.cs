@@ -11,7 +11,8 @@ namespace ConversationsCore.Services
 {
     public class SpeechToTextBasic : ISpeechToTextService
     {
-        public event EventHandler<Meaning> SpeechToTextCompletedEvent;
+        // The Payload property of the SpeechIntentEventArgs class
+        public event EventHandler<string> SpeechToTextCompletedEvent;
         public event EventHandler<string> SpeechToTextErrorEvent;
 
         public void OnMoreAudio(byte[] aBuffer)
