@@ -22,18 +22,18 @@ namespace ConversationsCore.Services
         public event EventHandler<string> MessageEvent = delegate { };
 
         WaveIn waveIn;
-        readonly SampleAggregator sampleAggregator;
         UnsignedMixerControl volumeControl;
         double MicrophoneLevel = 100;
-        WaveFileWriter writer;
 
         public bool IsRecording { get; set; }
         public WaveFormat RecordingFormat { get; set; }
 
-        public RecordAudioNAudio()
+        public int RecordingFrequency { get { return RecordingFormat.SampleRate; } }
+
+
+        public RecordAudioNAudio(int sampleRate = 44100, int channels = 1)
         {
-            sampleAggregator = new SampleAggregator();
-            RecordingFormat = new WaveFormat(44100, 1);
+            RecordingFormat = new WaveFormat(sampleRate, channels);
         }
 
 
@@ -57,7 +57,6 @@ namespace ConversationsCore.Services
             waveIn.RecordingStopped += OnRecordingStopped;
             waveIn.StartRecording();
             TryGetVolumeControl();
-            writer = new WaveFileWriter(@"D:\test.wav", RecordingFormat);
             IsRecording = true;
             StartedRecordingEvent(this, null);
             return true;
@@ -117,48 +116,18 @@ namespace ConversationsCore.Services
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
-            var abuffer = new AudioBuffer() { Buffer = e.Buffer, BufferSize = e.BytesRecorded };
             MessageEvent(this, $"OnDataAvailable: {e.BytesRecorded} - IsRecording: {IsRecording}");
-            byte[] buffer = e.Buffer;
-            int bytesRecorded = e.BytesRecorded;
-            WriteToFile(buffer, bytesRecorded);
-
-            for (int index = 0; index < e.BytesRecorded; index += 2)
-            {
-                short sample = (short)((buffer[index + 1] << 8) |
-                                        buffer[index + 0]);
-                float sample32 = sample / 32768f;
-                sampleAggregator.Add(sample32);
-            }
-
+            if (e.BytesRecorded == 0) { StopRecordingAudioAsync(); }
+            var abuffer = new AudioBuffer() { Buffer = e.Buffer, BufferSize = e.BytesRecorded };
             PartialRecordingEvent(this, abuffer);
         }
-
-        private void WriteToFile(byte[] buffer, int bytesRecorded)
-        {
-            MessageEvent(this, $"WriteToFile: {bytesRecorded}");
-            long maxFileLength = this.RecordingFormat.AverageBytesPerSecond * 60;
-
-            if (IsRecording)
-            {
-                var toWrite = (int)Math.Min(maxFileLength - writer.Length, bytesRecorded);
-                if (toWrite > 0)
-                {
-                    writer.Write(buffer, 0, bytesRecorded);
-                }
-                else
-                {
-                    StopRecordingAudioAsync();
-                }
-            }
-        }
+        
 
 
 
         void OnRecordingStopped(object sender, StoppedEventArgs e)
         {
             IsRecording = false;
-            writer.Dispose();
             FinishedRecordingEvent(this, e.Exception);
         }
 

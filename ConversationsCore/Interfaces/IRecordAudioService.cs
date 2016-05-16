@@ -20,6 +20,7 @@ namespace ConversationsCore.Interfaces
 
         event EventHandler<string> MessageEvent;
 
+        int RecordingFrequency { get; }
 
         bool StartRecordingAudioAsync();
 

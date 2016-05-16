@@ -34,6 +34,7 @@
             this.btnStopConversation = new System.Windows.Forms.Button();
             this.lblLight = new System.Windows.Forms.Label();
             this.btnEditData = new System.Windows.Forms.Button();
+            this.barVolume = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // btnStart
@@ -89,11 +90,20 @@
             this.btnEditData.UseVisualStyleBackColor = true;
             this.btnEditData.Click += new System.EventHandler(this.btnEditData_Click);
             // 
+            // barVolume
+            // 
+            this.barVolume.ForeColor = System.Drawing.Color.Red;
+            this.barVolume.Location = new System.Drawing.Point(13, 115);
+            this.barVolume.Name = "barVolume";
+            this.barVolume.Size = new System.Drawing.Size(117, 23);
+            this.barVolume.TabIndex = 5;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(437, 510);
+            this.Controls.Add(this.barVolume);
             this.Controls.Add(this.btnEditData);
             this.Controls.Add(this.lblLight);
             this.Controls.Add(this.btnStopConversation);
@@ -116,6 +126,7 @@
         private System.Windows.Forms.Button btnStopConversation;
         private System.Windows.Forms.Label lblLight;
         private System.Windows.Forms.Button btnEditData;
+        private System.Windows.Forms.ProgressBar barVolume;
     }
 }
 

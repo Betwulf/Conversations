@@ -19,6 +19,7 @@ namespace Conversations
 
         RecordAudioNAudio audio;
         WavefileSaver wavefilesaver;
+        SampleAggregator sampler;
         public Form1()
         {
             InitializeComponent();
@@ -29,6 +30,13 @@ namespace Conversations
             audio.RecordAudioErrorEvent += OnAudioError;
             audio.MessageEvent += OnMessage;
             wavefilesaver = new WavefileSaver(audio, "temp.wav");
+            sampler = new SampleAggregator(audio);
+            sampler.SampleEvent += OnSampleEvent;
+        }
+
+        private void OnSampleEvent(object sender, MaxSampleEventArgs e)
+        {
+            barVolume.Value = (int)(Math.Max(e.MaxSample, Math.Abs(e.MinSample))*100);
         }
 
         private void OnMessage(object sender, string e)
@@ -56,6 +64,7 @@ namespace Conversations
             Message("OnStop");
             lblLight.Visible = false;
             btnStart.Enabled = true;
+            barVolume.Value = 0;
         }
 
 

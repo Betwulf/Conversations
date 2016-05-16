@@ -13,6 +13,9 @@ using ConversationsCore.DataObjects;
 
 namespace ConversationsCore.Audio
 {
+    /// <summary>
+    /// As you might expect, this saves wave files.
+    /// </summary>
     public class WavefileSaver
     {
 
@@ -25,7 +28,7 @@ namespace ConversationsCore.Audio
 
         public WavefileSaver(IRecordAudioService recorder, string aFilename)
         {
-            RecordingFormat = new WaveFormat(44100, 1);
+            RecordingFormat = new WaveFormat(recorder.RecordingFrequency, 1);
             writer = new WaveFileWriter(aFilename, RecordingFormat);
             recorder.PartialRecordingEvent += OnDataAvailable;
             recorder.FinishedRecordingEvent += OnFinishedRecording;
@@ -42,7 +45,7 @@ namespace ConversationsCore.Audio
         public void OnDataAvailable(object sender, AudioBuffer buffer)
         {
             MessageEvent(this, $"WavefileSaver.OnDataAvailable: {buffer.BufferSize}");
-            long maxFileLength = this.RecordingFormat.AverageBytesPerSecond * 60;
+            long maxFileLength = this.RecordingFormat.AverageBytesPerSecond * 60; // capped at 60 seconds
 
             var toWrite = (int)Math.Min(maxFileLength - writer.Length, buffer.BufferSize);
             if (toWrite > 0)
