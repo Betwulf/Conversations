@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ConversationsCore.DataObjects;
+using ConversationsCore.Audio;
 
 namespace Conversations
 {
@@ -17,15 +18,17 @@ namespace Conversations
     {
 
         RecordAudioNAudio audio;
+        WavefileSaver wavefilesaver;
         public Form1()
         {
             InitializeComponent();
             audio = new RecordAudioNAudio();
-            audio.FinishedRecordingEvent += OnStop;
+            audio.FinishedRecordingEvent += OnStopRecording;
             audio.StartedRecordingEvent += OnStartedRecording;
             audio.PartialRecordingEvent += OnPartialRecording;
             audio.RecordAudioErrorEvent += OnAudioError;
             audio.MessageEvent += OnMessage;
+            wavefilesaver = new WavefileSaver(audio, "temp.wav");
         }
 
         private void OnMessage(object sender, string e)
@@ -38,7 +41,7 @@ namespace Conversations
             Message($"OnAudioError: {e.theException.Message}");
         }
 
-        private void OnPartialRecording(object sender, byte[] e)
+        private void OnPartialRecording(object sender, AudioBuffer abuffer)
         {
             Message("OnPartialRecording");
         }
@@ -48,6 +51,14 @@ namespace Conversations
             Message("OnStartedRecording");
         }
 
+        private void OnStopRecording(object sender, Exception e)
+        {
+            Message("OnStop");
+            lblLight.Visible = false;
+            btnStart.Enabled = true;
+        }
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -55,9 +66,18 @@ namespace Conversations
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            lblLight.Visible = true;
-            btnStart.Enabled = false;
-            audio.StartRecordingAudioAsync();
+            try
+            {
+                lblLight.Visible = true;
+                btnStart.Enabled = false;
+                audio.StartRecordingAudioAsync();
+            }
+            catch (Exception ex)
+            {
+                lblLight.Visible = false;
+                btnStart.Enabled = true;
+                Message(ex.Message);
+            }
         }
 
         private void btnStopConversation_Click(object sender, EventArgs e)
@@ -65,12 +85,6 @@ namespace Conversations
             audio.StopRecordingAudioAsync();
         }
 
-        private void OnStop(object sender, Stream e)
-        {
-            Message("OnStop");
-            lblLight.Visible = false;
-            btnStart.Enabled = true;
-        }
 
         private void Message(string aMessage)
         {

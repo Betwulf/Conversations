@@ -12,9 +12,10 @@ namespace ConversationsCore.Services
     {
         public IAudioControllerService AudioController { get; set; }
 
-        public event EventHandler<ConversationsErrorArgs> CharacterCoordinatorErrorEvent;
-        public event EventHandler<Character> ConversationEndedEvent;
-        public event EventHandler<Character> ConversationStartedEvent;
+        public event EventHandler<ConversationsErrorArgs> CharacterCoordinatorErrorEvent = delegate { };
+        public event EventHandler<Character> ConversationEndedEvent = delegate { };
+        public event EventHandler<Character> ConversationStartedEvent = delegate { };
+
 
         public bool StartConversationAsync(Character aCharacter)
         {

@@ -11,8 +11,8 @@ namespace ConversationsCore.Services
 {
     class RepsonseFinder : IResponseFinderService
     {
-        public event EventHandler<ConversationsErrorArgs> ResponseFinderErrorEvent;
-        public event EventHandler<IntentResponse> ResponseFoundEvent;
+        public event EventHandler<ConversationsErrorArgs> ResponseFinderErrorEvent = delegate { };
+        public event EventHandler<IntentResponse> ResponseFoundEvent = delegate { };
 
         public bool StartProcessingIntentAsync(string SpeechIntentPayload, Character aCharacter)
         {

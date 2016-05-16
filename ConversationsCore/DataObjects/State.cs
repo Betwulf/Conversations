@@ -21,5 +21,11 @@ namespace ConversationsCore.DataObjects
         {
             IntentMap = new List<IntentResponse>();
         }
+
+        public override string ToString()
+        {
+            return Id;
+        }
+
     }
 }

@@ -12,9 +12,9 @@ namespace ConversationsCore.Interfaces
     {
         event EventHandler<Stream> StartedRecordingEvent;
 
-        event EventHandler<byte[]> PartialRecordingEvent;
+        event EventHandler<AudioBuffer> PartialRecordingEvent;
 
-        event EventHandler<Stream> FinishedRecordingEvent;
+        event EventHandler<Exception> FinishedRecordingEvent;
 
         event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
 

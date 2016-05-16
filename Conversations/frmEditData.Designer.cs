@@ -82,6 +82,7 @@
             this.txtId.Name = "txtId";
             this.txtId.Size = new System.Drawing.Size(193, 20);
             this.txtId.TabIndex = 6;
+            this.txtId.Text = "Bartender";
             // 
             // lblId
             // 

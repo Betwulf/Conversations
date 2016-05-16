@@ -15,11 +15,11 @@ namespace ConversationsCore.Services
 {
     public class RecordAudioNAudio : IRecordAudioService
     {
-        public event EventHandler<Stream> FinishedRecordingEvent;
-        public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
-        public event EventHandler<Stream> StartedRecordingEvent;
-        public event EventHandler<byte[]> PartialRecordingEvent;
-        public event EventHandler<string> MessageEvent;
+        public event EventHandler<Exception> FinishedRecordingEvent = delegate { };
+        public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent = delegate { };
+        public event EventHandler<Stream> StartedRecordingEvent = delegate { };
+        public event EventHandler<AudioBuffer> PartialRecordingEvent = delegate { };
+        public event EventHandler<string> MessageEvent = delegate { };
 
         WaveIn waveIn;
         readonly SampleAggregator sampleAggregator;
@@ -117,6 +117,7 @@ namespace ConversationsCore.Services
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
+            var abuffer = new AudioBuffer() { Buffer = e.Buffer, BufferSize = e.BytesRecorded };
             MessageEvent(this, $"OnDataAvailable: {e.BytesRecorded} - IsRecording: {IsRecording}");
             byte[] buffer = e.Buffer;
             int bytesRecorded = e.BytesRecorded;
@@ -130,7 +131,7 @@ namespace ConversationsCore.Services
                 sampleAggregator.Add(sample32);
             }
 
-            PartialRecordingEvent(this, buffer);
+            PartialRecordingEvent(this, abuffer);
         }
 
         private void WriteToFile(byte[] buffer, int bytesRecorded)
@@ -158,7 +159,7 @@ namespace ConversationsCore.Services
         {
             IsRecording = false;
             writer.Dispose();
-            FinishedRecordingEvent(this, null);
+            FinishedRecordingEvent(this, e.Exception);
         }
 
 

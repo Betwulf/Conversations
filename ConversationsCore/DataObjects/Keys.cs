@@ -12,5 +12,11 @@ namespace ConversationsCore.DataObjects
         public string Id { get; set; }
 
         public string KeyName { get; set; }
+
+        public override string ToString()
+        {
+            return Id;
+        }
+
     }
 }

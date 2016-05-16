@@ -46,6 +46,8 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,7 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\SampleAggregator.cs" />
+    <Compile Include="Audio\WavefileSaver.cs" />
+    <Compile Include="DataObjects\AudioBuffer.cs" />
     <Compile Include="DataObjects\IntentResponse.cs" />
+    <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Repository\ConversationsClassRepository.cs" />
     <Compile Include="Repository\ConversationsRepository.cs" />
     <Compile Include="DataObjects\Character.cs" />

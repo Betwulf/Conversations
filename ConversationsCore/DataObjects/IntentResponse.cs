@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using ConversationsCore.Interfaces;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using ConversationsCore.Helpers;
 
 namespace ConversationsCore.DataObjects
 {
@@ -27,11 +29,19 @@ namespace ConversationsCore.DataObjects
         /// <summary>
         /// Must match context flags in character
         /// </summary>
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
+        "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+       typeof(System.Drawing.Design.UITypeEditor))]
+        [TypeConverter(typeof(CsvConverter))]
         public List<string> ContextNeeded { get; set; }
 
         /// <summary>
         /// If used, this response will add these context flags to the character
         /// </summary>
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
+        "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+       typeof(System.Drawing.Design.UITypeEditor))]
+        [TypeConverter(typeof(CsvConverter))]
         public List<string> ContextToBeAdded { get; set; }
 
         /// <summary>
@@ -42,6 +52,10 @@ namespace ConversationsCore.DataObjects
         /// <summary>
         /// Must match any value or values 
         /// </summary>
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
+        "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+       typeof(System.Drawing.Design.UITypeEditor))]
+        [TypeConverter(typeof(CsvConverter))]
         public List<string> EntityValues { get; set; }
 
         /// <summary>
@@ -57,5 +71,11 @@ namespace ConversationsCore.DataObjects
             EntityValues = new List<string>();
             ResponseFileList = new List<ResponseFile>();
         }
+
+        public override string ToString()
+        {
+            return Id;
+        }
+
     }
 }
