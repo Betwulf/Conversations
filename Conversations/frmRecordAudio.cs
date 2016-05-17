@@ -15,6 +15,7 @@ namespace Conversations
 
         RecordAudioNAudio audio;
         WavefileSaver wavefilesaver;
+        SampleAggregator sampler;
 
         public IntentResponse SelectedIntentResponse { get; set; }
         public State SelectedState { get; set; }
@@ -32,8 +33,19 @@ namespace Conversations
             audio.PartialRecordingEvent += OnPartialRecording;
             audio.RecordAudioErrorEvent += OnAudioError;
             audio.MessageEvent += OnMessage;
+            sampler = new SampleAggregator(audio);
+            sampler.SampleEvent += OnSampleEvent;
 
         }
+
+
+
+        private void OnSampleEvent(object sender, MaxSampleEventArgs e)
+        {
+            barVolume.Value = (int)(Math.Max(e.MaxSample, Math.Abs(e.MinSample)) * 100);
+        }
+
+
         private void Message(string aMessage)
         {
             Console.WriteLine(aMessage);

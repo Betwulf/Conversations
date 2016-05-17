@@ -8,6 +8,9 @@ using ConversationsCore.Interfaces;
 
 namespace ConversationsCore.Services
 {
+    /// <summary>
+    /// Coordinates all other services in order to execute a full conversation with the character
+    /// </summary>
     public class CharacterCoordinatorBasic : ICharacterCoordinatorService
     {
         public IAudioControllerService AudioController { get; set; }

@@ -5,6 +5,9 @@ using ConversationsCore.DataObjects;
 
 namespace ConversationsCore.Interfaces
 {
+    /// <summary>
+    /// Coordinates all other services in order to execute a full conversation with the character
+    /// </summary>
     public interface ICharacterCoordinatorService
     {
         IAudioControllerService AudioController { get; set; }

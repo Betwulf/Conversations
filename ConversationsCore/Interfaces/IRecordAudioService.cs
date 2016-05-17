@@ -8,6 +8,9 @@ using System.IO;
 
 namespace ConversationsCore.Interfaces
 {
+    /// <summary>
+    /// Basic interface for recording audio
+    /// </summary>
     public interface IRecordAudioService
     {
         event EventHandler<int> StartedRecordingEvent;

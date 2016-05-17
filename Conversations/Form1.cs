@@ -18,7 +18,6 @@ namespace Conversations
     {
 
         RecordAudioNAudio audio;
-        WavefileSaver wavefilesaver;
         SampleAggregator sampler;
         public Form1()
         {
@@ -29,7 +28,6 @@ namespace Conversations
             audio.PartialRecordingEvent += OnPartialRecording;
             audio.RecordAudioErrorEvent += OnAudioError;
             audio.MessageEvent += OnMessage;
-            wavefilesaver = new WavefileSaver(audio, "temp.wav");
             sampler = new SampleAggregator(audio);
             sampler.SampleEvent += OnSampleEvent;
         }
