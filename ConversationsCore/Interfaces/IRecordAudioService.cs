@@ -25,6 +25,8 @@ namespace ConversationsCore.Interfaces
 
         int RecordingFrequency { get; }
 
+        bool IsRecording { get; set; }
+
         bool StartRecordingAudioAsync();
 
         bool StopRecordingAudioAsync();

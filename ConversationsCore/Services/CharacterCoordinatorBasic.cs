@@ -19,6 +19,10 @@ namespace ConversationsCore.Services
         public event EventHandler<Character> ConversationEndedEvent = delegate { };
         public event EventHandler<Character> ConversationStartedEvent = delegate { };
 
+        public CharacterCoordinatorBasic()
+        {
+            AudioController = new AudioController();
+        }
 
         public bool StartConversationAsync(Character aCharacter)
         {

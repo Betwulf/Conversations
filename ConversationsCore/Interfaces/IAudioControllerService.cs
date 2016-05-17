@@ -15,15 +15,15 @@ namespace ConversationsCore.Interfaces
     {
         IRecordAudioService RecordAudio { get; set; }
 
-        void OnRecordStart();
+        void StartRecording();
 
-        void OnRecordStop();
+        void StopRecording();
 
         event EventHandler<float> AudioLevelEvent;
 
-        event EventHandler<bool> MicrophoneOnEvent;
+        event EventHandler<bool> RecordOnEvent;
 
-        event EventHandler<bool> MicrophoneOffEvent;
+        event EventHandler<bool> RecordOffEvent;
 
         event EventHandler CompletedEvent;
 

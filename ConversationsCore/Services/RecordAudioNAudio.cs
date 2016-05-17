@@ -73,7 +73,9 @@ namespace ConversationsCore.Services
         }
 
 
-
+        /// <summary>
+        /// TODO: What does this do exactly? :) 
+        /// </summary>
         private void TryGetVolumeControl()
         {
             int waveInDeviceNumber = waveIn.DeviceNumber;
@@ -116,7 +118,7 @@ namespace ConversationsCore.Services
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
-            MessageEvent(this, $"OnDataAvailable: {e.BytesRecorded} - IsRecording: {IsRecording}");
+            //MessageEvent(this, $"OnDataAvailable: {e.BytesRecorded} - IsRecording: {IsRecording}");
             if (e.BytesRecorded == 0) { StopRecordingAudioAsync(); }
             var abuffer = new AudioBuffer() { Buffer = e.Buffer, BufferSize = e.BytesRecorded };
             PartialRecordingEvent(this, abuffer);
