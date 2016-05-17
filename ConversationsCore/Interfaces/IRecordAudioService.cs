@@ -10,7 +10,7 @@ namespace ConversationsCore.Interfaces
 {
     public interface IRecordAudioService
     {
-        event EventHandler<Stream> StartedRecordingEvent;
+        event EventHandler<int> StartedRecordingEvent;
 
         event EventHandler<AudioBuffer> PartialRecordingEvent;
 

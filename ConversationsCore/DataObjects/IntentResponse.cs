@@ -62,14 +62,12 @@ namespace ConversationsCore.DataObjects
         /// Collection of wave files that can be played for this response.
         /// Assume any can be picked at random?
         /// </summary>
-        public List<ResponseFile> ResponseFileList { get; set; }
 
         public IntentResponse()
         {
             ContextNeeded = new List<string>();
             ContextToBeAdded = new List<string>();
             EntityValues = new List<string>();
-            ResponseFileList = new List<ResponseFile>();
         }
 
         public override string ToString()

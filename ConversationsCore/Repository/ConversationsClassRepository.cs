@@ -24,7 +24,7 @@ namespace ConversationsCore.Repository
         public string ClassDirectory
         { get { return System.IO.Path.Combine(RootPath, CollectionId); } }
 
-        private string GetFullFilename(string id)
+        private string GetObjectFullFilename(string id)
         {
             return System.IO.Path.Combine(ClassDirectory, id + ".json");
         }
@@ -44,7 +44,7 @@ namespace ConversationsCore.Repository
             await Task<T>.Run(() =>
            {
                Directory.CreateDirectory(ClassDirectory); // Create Directory if it isn't already made
-               string filepathString = GetFullFilename(entity.Id);
+               string filepathString = GetObjectFullFilename(entity.Id);
 
                if (!File.Exists(filepathString))
                {
@@ -74,7 +74,7 @@ namespace ConversationsCore.Repository
             await Task.Run(() =>
             {
                 if (isCached) Cache.Remove(id);
-                string filepathString = GetFullFilename(id);
+                string filepathString = GetObjectFullFilename(id);
                 if (File.Exists(filepathString))
                 {
                     File.Delete(filepathString);
@@ -129,7 +129,7 @@ namespace ConversationsCore.Repository
                 return storedDoc;
             }
             Directory.CreateDirectory(ClassDirectory); // Create Directory if it isn't already made
-            string pathString = GetFullFilename(id);
+            string pathString = GetObjectFullFilename(id);
             if (File.Exists(pathString))
             {
                 T theDoc = JsonConvert.DeserializeObject<T>(File.ReadAllText(pathString));

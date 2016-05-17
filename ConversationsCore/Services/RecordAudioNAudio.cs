@@ -17,7 +17,7 @@ namespace ConversationsCore.Services
     {
         public event EventHandler<Exception> FinishedRecordingEvent = delegate { };
         public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent = delegate { };
-        public event EventHandler<Stream> StartedRecordingEvent = delegate { };
+        public event EventHandler<int> StartedRecordingEvent = delegate { };
         public event EventHandler<AudioBuffer> PartialRecordingEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
 
@@ -58,7 +58,7 @@ namespace ConversationsCore.Services
             waveIn.StartRecording();
             TryGetVolumeControl();
             IsRecording = true;
-            StartedRecordingEvent(this, null);
+            StartedRecordingEvent(this, RecordingFormat.SampleRate);
             return true;
         }
 

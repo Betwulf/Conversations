@@ -11,15 +11,24 @@ namespace ConversationsCore.DataObjects
     {
         public string Id { get; set; }
 
+        /// <summary>
+        /// Associated LUIS App Id used to map text to intent
+        /// </summary>
         public string LUISAppId { get; set; }
 
+        /// <summary>
+        /// If No response is valid in this state, try this one next
+        /// </summary>
         public string FallbackStateId { get; set; }
 
-        public List<IntentResponse> IntentMap { get; set; }
+        /// <summary>
+        /// List used to determine what is the proper response
+        /// </summary>
+        public List<IntentResponse> IntentResponseList { get; set; }
 
         public State()
         {
-            IntentMap = new List<IntentResponse>();
+            IntentResponseList = new List<IntentResponse>();
         }
 
         public override string ToString()

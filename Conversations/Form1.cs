@@ -54,7 +54,7 @@ namespace Conversations
             Message("OnPartialRecording");
         }
 
-        private void OnStartedRecording(object sender, Stream e)
+        private void OnStartedRecording(object sender, int e)
         {
             Message("OnStartedRecording");
         }
@@ -106,6 +106,12 @@ namespace Conversations
             var form = new frmEditData();
             form.ShowDialog();
             
+        }
+
+        private void btnRecordAudio_Click(object sender, EventArgs e)
+        {
+            var form = new frmRecordAudio();
+            form.ShowDialog();
         }
     }
 }
