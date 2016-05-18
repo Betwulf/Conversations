@@ -71,11 +71,13 @@ namespace ConversationsCore.Services
 
         public void FinishedProcessing()
         {
+            MessageEvent(this, "SpeechToTextBasic - FinishedProcessing");
             DataClient.EndAudio();
         }
 
         public void MoreAudio(AudioBuffer aBuffer)
         {
+            MessageEvent(this, "SpeechToTextBasic - MoreAudio");
             DataClient.SendAudio(aBuffer.Buffer, aBuffer.BufferSize);
         }
     }

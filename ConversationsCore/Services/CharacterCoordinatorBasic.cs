@@ -31,7 +31,12 @@ namespace ConversationsCore.Services
         public bool StartConversationAsync(Character aCharacter)
         {
             CurrentCharacter = aCharacter;
-            AudioController.RecordAudio.MessageEvent += MessageEvent;
+            // Start with the first state - should be default
+            if (CurrentCharacter.CurrentState == null)
+            {
+                CurrentCharacter.CurrentState = CurrentCharacter.StateList.First();
+            }
+            AudioController.RecordAudio.MessageEvent += RecordAudio_MessageEvent;
             AudioController.RecordAudio.PartialRecordingEvent += OnPartialRecordingEvent;
             AudioController.RecordAudio.RecordAudioErrorEvent += OnErrorEvent;
             AudioController.RecordAudio.FinishedRecordingEvent += OnFinishedRecordingEvent;
@@ -42,6 +47,11 @@ namespace ConversationsCore.Services
             SpeechToText.StartProcessingAudioAsync(aCharacter);
             AudioController.StartRecording();
             return true;
+        }
+
+        private void RecordAudio_MessageEvent(object sender, string e)
+        {
+            MessageEvent(this, e);
         }
 
         private void AudioController_MessageEvent(object sender, string e)
@@ -77,6 +87,7 @@ namespace ConversationsCore.Services
 
         private void OnPartialRecordingEvent(object sender, AudioBuffer e)
         {
+            MessageEvent(this, "CharacterCoordinatorBasic - OnPartialRecordingEvent");
             SpeechToText.MoreAudio(e);
         }
 
