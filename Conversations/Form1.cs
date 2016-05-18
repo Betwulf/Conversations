@@ -11,17 +11,25 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ConversationsCore.DataObjects;
 using ConversationsCore.Audio;
+using ConversationsCore.Repository;
 
 namespace Conversations
 {
     public partial class Form1 : Form
     {
+        CharacterCoordinatorBasic Coordinator;
+        Character DefaultCharacter { get; set; }
+        ConversationsRepository Rep { get; set; }
 
-        RecordAudioNAudio audio;
-        SampleAggregator sampler;
+
+        //RecordAudioNAudio audio;
+        //SampleAggregator sampler;
         public Form1()
         {
             InitializeComponent();
+            Rep = new ConversationsRepository();
+
+            /*
             audio = new RecordAudioNAudio();
             audio.FinishedRecordingEvent += OnStopRecording;
             audio.StartedRecordingEvent += OnStartedRecording;
@@ -30,10 +38,33 @@ namespace Conversations
             audio.MessageEvent += OnMessage;
             sampler = new SampleAggregator(audio);
             sampler.SampleEvent += OnSampleEvent;
+            */
+            Coordinator = new CharacterCoordinatorBasic();
+            Coordinator.CharacterCoordinatorErrorEvent += Coordinator_CharacterCoordinatorErrorEvent;
+            Coordinator.ConversationStartedEvent += Coordinator_ConversationStartedEvent;
+            Coordinator.ConversationEndedEvent += Coordinator_ConversationEndedEvent;
+            Coordinator.MessageEvent += OnMessage;
+            DefaultCharacter = Rep.CharacterDB.GetById("Bartender");
+        }
+
+        private void Coordinator_ConversationEndedEvent(object sender, Character e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Coordinator_ConversationStartedEvent(object sender, Character e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Coordinator_CharacterCoordinatorErrorEvent(object sender, ConversationsErrorArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnSampleEvent(object sender, MaxSampleEventArgs e)
         {
+            lblSample.Text = $"Sample: {e.MaxSample}";
             barVolume.Value = (int)(Math.Max(e.MaxSample, Math.Abs(e.MinSample))*100);
         }
 
@@ -77,7 +108,8 @@ namespace Conversations
             {
                 lblLight.Visible = true;
                 btnStart.Enabled = false;
-                audio.StartRecordingAudioAsync();
+                Coordinator.StartConversationAsync(DefaultCharacter);
+                //audio.StartRecordingAudioAsync();
             }
             catch (Exception ex)
             {
@@ -89,7 +121,7 @@ namespace Conversations
 
         private void btnStopConversation_Click(object sender, EventArgs e)
         {
-            audio.StopRecordingAudioAsync();
+            //audio.StopRecordingAudioAsync();
         }
 
 

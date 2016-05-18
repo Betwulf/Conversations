@@ -18,7 +18,11 @@ namespace ConversationsCore.Interfaces
 
         event EventHandler<ConversationsErrorArgs> CharacterCoordinatorErrorEvent;
 
+        event EventHandler<string> MessageEvent;
+
         bool StartConversationAsync(Character aCharacter);
+
+        bool StopConversationAsync(Character aCharacter);
 
     }
 }

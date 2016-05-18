@@ -13,19 +13,20 @@ namespace ConversationsCore.Interfaces
     /// </summary>
     public interface IAudioControllerService
     {
+        event EventHandler<float> AudioLevelEvent;
+        event EventHandler<bool> RecordOnEvent;
+        event EventHandler<bool> RecordOffEvent;
+        event EventHandler<Exception> CompletedEvent;
+        event EventHandler<string> MessageEvent;
+
+
+
         IRecordAudioService RecordAudio { get; set; }
 
         void StartRecording();
 
         void StopRecording();
 
-        event EventHandler<float> AudioLevelEvent;
-
-        event EventHandler<bool> RecordOnEvent;
-
-        event EventHandler<bool> RecordOffEvent;
-
-        event EventHandler CompletedEvent;
 
     }
 }

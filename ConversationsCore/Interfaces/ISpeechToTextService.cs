@@ -10,11 +10,12 @@ namespace ConversationsCore.Interfaces
     public interface ISpeechToTextService
     {
         event EventHandler<string> SpeechToTextCompletedEvent;
-
         event EventHandler<string> SpeechToTextErrorEvent;
+        event EventHandler<string> MessageEvent;
 
         bool StartProcessingAudioAsync(Character aCharacter);
 
-        void OnMoreAudio(byte[] aBuffer);
+        void MoreAudio(AudioBuffer aBuffer);
+        void FinishedProcessing();
     }
 }

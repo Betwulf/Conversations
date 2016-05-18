@@ -36,6 +36,7 @@
             this.btnEditData = new System.Windows.Forms.Button();
             this.barVolume = new System.Windows.Forms.ProgressBar();
             this.btnRecordAudio = new System.Windows.Forms.Button();
+            this.lblSample = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnStart
@@ -109,11 +110,22 @@
             this.btnRecordAudio.UseVisualStyleBackColor = true;
             this.btnRecordAudio.Click += new System.EventHandler(this.btnRecordAudio_Click);
             // 
+            // lblSample
+            // 
+            this.lblSample.AutoSize = true;
+            this.lblSample.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSample.Location = new System.Drawing.Point(12, 152);
+            this.lblSample.Name = "lblSample";
+            this.lblSample.Size = new System.Drawing.Size(61, 16);
+            this.lblSample.TabIndex = 7;
+            this.lblSample.Text = "Sample: ";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(437, 510);
+            this.Controls.Add(this.lblSample);
             this.Controls.Add(this.btnRecordAudio);
             this.Controls.Add(this.barVolume);
             this.Controls.Add(this.btnEditData);
@@ -140,6 +152,7 @@
         private System.Windows.Forms.Button btnEditData;
         private System.Windows.Forms.ProgressBar barVolume;
         private System.Windows.Forms.Button btnRecordAudio;
+        private System.Windows.Forms.Label lblSample;
     }
 }
 

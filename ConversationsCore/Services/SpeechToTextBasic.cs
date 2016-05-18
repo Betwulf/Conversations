@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ConversationsCore.DataObjects;
 using ConversationsCore.Interfaces;
+using Microsoft.ProjectOxford.SpeechRecognition;
 
 namespace ConversationsCore.Services
 {
@@ -14,17 +15,69 @@ namespace ConversationsCore.Services
         // The Payload property of the SpeechIntentEventArgs class
         public event EventHandler<string> SpeechToTextCompletedEvent = delegate { };
         public event EventHandler<string> SpeechToTextErrorEvent = delegate { };
+        public event EventHandler<string> MessageEvent = delegate { };
 
-        public void OnMoreAudio(byte[] aBuffer)
+        DataRecognitionClient DataClient { get; set; }
+        private string DefaultLocale
         {
-            throw new NotImplementedException();
+            get { return "en-US"; }
+        }
+        private SpeechRecognitionMode Mode
+        {
+            get
+            {
+               return SpeechRecognitionMode.ShortPhrase;
+            }
         }
 
         public bool StartProcessingAudioAsync(Character aCharacter)
         {
-            throw new NotImplementedException();
+            DataClient = SpeechRecognitionServiceFactory.CreateDataClientWithIntent(               
+                DefaultLocale,
+                aCharacter.SpeechRecognitionSubscriptionKey,
+                aCharacter.SpeechRecognitionSubscriptionKey,
+                aCharacter.CurrentState.LUISAppId,
+                aCharacter.CurrentState.LUISSubscriptionKey);
+            DataClient.OnConversationError += DataClient_OnConversationError;
+            DataClient.OnPartialResponseReceived += DataClient_OnPartialResponseReceived;
+            DataClient.OnResponseReceived += DataClient_OnResponseReceived;
+            DataClient.OnIntent += DataClient_OnIntent;
+            return true;
+        }
+
+        private void DataClient_OnIntent(object sender, SpeechIntentEventArgs e)
+        {
+            SpeechToTextCompletedEvent(this, e.Payload);
+        }
+
+        private void DataClient_OnResponseReceived(object sender, SpeechResponseEventArgs e)
+        {
+            MessageEvent(this, $"SpeechToTextBasic - DataClient_OnResponseReceived {e.PhraseResponse}");
+        }
+
+        private void DataClient_OnPartialResponseReceived(object sender, PartialSpeechResponseEventArgs e)
+        {
+            MessageEvent(this, $"SpeechToTextBasic - DataClient_OnResponseReceived {e.PartialResult}");
+        }
+
+        private void DataClient_OnConversationError(object sender, SpeechErrorEventArgs e)
+        {
+            SpeechToTextErrorEvent(this, e.SpeechErrorText);
         }
 
 
+
+
+
+        public void FinishedProcessing()
+        {
+            DataClient.EndAudio();
+        }
+
+        public void MoreAudio(AudioBuffer aBuffer)
+        {
+            DataClient.SendAudio(aBuffer.Buffer, aBuffer.BufferSize);
+        }
     }
+
 }

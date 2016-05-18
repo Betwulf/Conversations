@@ -16,6 +16,9 @@ namespace ConversationsCore.DataObjects
         /// </summary>
         public string LUISAppId { get; set; }
 
+
+        public string LUISSubscriptionKey { get; set; }
+
         /// <summary>
         /// If No response is valid in this state, try this one next
         /// </summary>
