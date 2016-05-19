@@ -73,6 +73,13 @@ namespace ConversationsCore.Services
         {
             MessageEvent(this, "SpeechToTextBasic - FinishedProcessing");
             DataClient.EndAudio();
+            if (DataClient != null)
+            {
+                DataClient.Dispose();
+                DataClient = null;
+            }
+
+
         }
 
         public void MoreAudio(AudioBuffer aBuffer)
