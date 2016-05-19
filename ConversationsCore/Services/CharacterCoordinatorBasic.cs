@@ -24,7 +24,7 @@ namespace ConversationsCore.Services
 
         public CharacterCoordinatorBasic()
         {
-            AudioController = new AudioController();
+            AudioController = new AudioControllerWavefile("test.wav");
             SpeechToText = new SpeechToTextBasic();
         }
 

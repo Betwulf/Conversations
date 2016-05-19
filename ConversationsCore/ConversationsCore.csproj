@@ -76,7 +76,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataObjects\State.cs" />
     <Compile Include="Services\AudioController.cs" />
+    <Compile Include="Services\AudioControllerWavefile.cs" />
     <Compile Include="Services\CharacterCoordinatorBasic.cs" />
+    <Compile Include="Services\RecordAudioButReallyReadFromAWavefile.cs" />
     <Compile Include="Services\RecordAudioNAudio.cs" />
     <Compile Include="Services\RepsonseFinder.cs" />
     <Compile Include="Services\SpeechToTextBasic.cs" />
