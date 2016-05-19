@@ -75,5 +75,10 @@ namespace ConversationsCore.DataObjects
             return Id;
         }
 
+        public string GetResponseDirectory(Repository.ConversationsRepository Rep, Character aChar, State currState)
+        {
+            return $"{Rep.CharacterDB.ClassDirectory}\\{aChar.Id}\\{currState.Id}\\{Id}";
+        }
+
     }
 }

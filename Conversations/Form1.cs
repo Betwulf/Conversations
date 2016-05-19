@@ -127,6 +127,7 @@ namespace Conversations
         private void btnStopConversation_Click(object sender, EventArgs e)
         {
             //audio.StopRecordingAudioAsync();
+            Coordinator.StopConversationAsync(DefaultCharacter);
         }
 
 

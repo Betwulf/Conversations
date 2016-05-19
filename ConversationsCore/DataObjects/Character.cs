@@ -17,7 +17,7 @@ namespace ConversationsCore.DataObjects
         /// <summary>
         /// The presence of a string means that the item has been discussed or mentioned
         /// </summary>
-        public Dictionary<string, bool> ContextFlags { get; set; }
+        public List<string> ContextFlags { get; set; }
 
         /// <summary>
         /// StateList - order matters, the first State is the first one used
@@ -32,8 +32,9 @@ namespace ConversationsCore.DataObjects
 
         public Character()
         {
-            ContextFlags = new Dictionary<string, bool>();
+            ContextFlags = new List<string>();
             StateList = new List<State>();
         }
+        
     }
 }

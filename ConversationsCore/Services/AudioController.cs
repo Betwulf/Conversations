@@ -78,6 +78,10 @@ namespace ConversationsCore.Services
                 StartedTalking = true;
                 StartedSilence = false;
             }
+            else
+            {
+                MessageEvent(this, "AudioController - Waiting for talking...");
+            }
         }
 
          void OnRecordStart(object sender, int e)

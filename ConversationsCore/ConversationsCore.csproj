@@ -60,6 +60,7 @@
     <Compile Include="Audio\WavefileSaver.cs" />
     <Compile Include="DataObjects\AudioBuffer.cs" />
     <Compile Include="DataObjects\IntentResponse.cs" />
+    <Compile Include="DataObjects\ResponseJson.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Repository\ConversationsClassRepository.cs" />
     <Compile Include="Repository\ConversationsRepository.cs" />
@@ -80,8 +81,9 @@
     <Compile Include="Services\CharacterCoordinatorBasic.cs" />
     <Compile Include="Services\RecordAudioButReallyReadFromAWavefile.cs" />
     <Compile Include="Services\RecordAudioNAudio.cs" />
-    <Compile Include="Services\RepsonseFinder.cs" />
+    <Compile Include="Services\ResponseFinderBasic.cs" />
     <Compile Include="Services\SpeechToTextBasic.cs" />
+    <Compile Include="Services\TextToSpeech.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -93,7 +93,7 @@ namespace Conversations
                 if (SelectedIntentResponse != null)
                 {
                     string randomFilename = Path.GetRandomFileName();
-                    string aDirectoryName = $"{Rep.CharacterDB.ClassDirectory}\\{SelectedState.Id}\\{SelectedIntentResponse.Id}";
+                    string aDirectoryName = SelectedIntentResponse.GetResponseDirectory(Rep, chr, SelectedState);
                     Directory.CreateDirectory(aDirectoryName);
                     string aFilename = $"{aDirectoryName}\\{randomFilename}.wav";
                     Message($"Recording to file: {aFilename}");

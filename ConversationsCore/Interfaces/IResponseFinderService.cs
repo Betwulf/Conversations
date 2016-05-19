@@ -8,9 +8,9 @@ namespace ConversationsCore.Interfaces
 {
     public interface IResponseFinderService
     {
-        event EventHandler<IntentResponse> ResponseFoundEvent;
-
-        event EventHandler<ConversationsErrorArgs> ResponseFinderErrorEvent;
+        event EventHandler<string> ResponseFoundEvent;
+        event EventHandler<string> MessageEvent;
+        event EventHandler<Exception> ResponseFinderErrorEvent;
 
         /// <summary>
         /// Starts processing the right response, which will trigger eith er a response found event, or an error event

@@ -15,6 +15,7 @@ namespace ConversationsCore.Services
     {
         public IAudioControllerService AudioController { get; set; }
         public ISpeechToTextService SpeechToText { get; set; }
+        public IResponseFinderService ResponseFinder { get; set; }
         public Character CurrentCharacter { get; set; }
 
         public event EventHandler<ConversationsErrorArgs> CharacterCoordinatorErrorEvent = delegate { };
@@ -24,12 +25,14 @@ namespace ConversationsCore.Services
 
         public CharacterCoordinatorBasic()
         {
-            AudioController = new AudioControllerWavefile("test.wav");
-            SpeechToText = new SpeechToTextBasic();
         }
 
         public bool StartConversationAsync(Character aCharacter)
         {
+            if (AudioController == null) AudioController = new AudioControllerWavefile("test.wav");
+            SpeechToText = new SpeechToTextBasic();
+            ResponseFinder = new ResponseFinderBasic();
+
             CurrentCharacter = aCharacter;
             // Start with the first state - should be default
             if (CurrentCharacter.CurrentState == null)
@@ -45,8 +48,26 @@ namespace ConversationsCore.Services
             SpeechToText.SpeechToTextErrorEvent += SpeechToTextErrorEvent;
             SpeechToText.MessageEvent += SpeechToText_MessageEvent;
             SpeechToText.StartProcessingAudioAsync(aCharacter);
+            ResponseFinder.ResponseFoundEvent += ResponseFinder_ResponseFoundEvent;
+            ResponseFinder.ResponseFinderErrorEvent += ResponseFinder_ResponseFinderErrorEvent;
+            ResponseFinder.MessageEvent += ResponseFinder_MessageEvent;
             AudioController.StartRecording();
             return true;
+        }
+
+        private void ResponseFinder_MessageEvent(object sender, string e)
+        {
+            MessageEvent(this, e);
+        }
+
+        private void ResponseFinder_ResponseFinderErrorEvent(object sender, Exception e)
+        {
+            MessageEvent(this, $"ResponseFinderErrorEvent: {e.Message}");
+        }
+
+        private void ResponseFinder_ResponseFoundEvent(object sender, string e)
+        {
+            MessageEvent(this, e);
         }
 
         private void RecordAudio_MessageEvent(object sender, string e)
@@ -67,6 +88,7 @@ namespace ConversationsCore.Services
         private void OnSpeechToTextEvent(object sender, string e)
         {
             MessageEvent(this, e);
+            ResponseFinder.StartProcessingIntentAsync(e, CurrentCharacter);
         }
 
         private void SpeechToTextErrorEvent(object sender, string e)
