@@ -47,6 +47,7 @@ namespace ConversationsCore.Services
 
         private void DataClient_OnIntent(object sender, SpeechIntentEventArgs e)
         {
+            MessageEvent(this, $"SpeechToTextBasic - DataClient_OnIntent {e.Payload}");
             SpeechToTextCompletedEvent(this, e.Payload);
         }
 

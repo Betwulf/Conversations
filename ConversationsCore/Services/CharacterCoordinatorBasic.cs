@@ -82,7 +82,7 @@ namespace ConversationsCore.Services
 
         private void OnErrorEvent(object sender, ConversationsErrorArgs e)
         {
-            throw new NotImplementedException();
+            MessageEvent(this, e.theException.Message);
         }
 
         private void OnPartialRecordingEvent(object sender, AudioBuffer e)
