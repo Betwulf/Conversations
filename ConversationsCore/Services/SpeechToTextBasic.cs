@@ -26,22 +26,25 @@ namespace ConversationsCore.Services
         {
             get
             {
-               return SpeechRecognitionMode.ShortPhrase;
+                return SpeechRecognitionMode.ShortPhrase;
             }
         }
 
         public bool StartProcessingAudioAsync(Character aCharacter)
         {
-            DataClient = SpeechRecognitionServiceFactory.CreateDataClientWithIntent(               
-                DefaultLocale,
-                aCharacter.SpeechRecognitionSubscriptionKey,
-                aCharacter.SpeechRecognitionSubscriptionKey,
-                aCharacter.CurrentState.LUISAppId,
-                aCharacter.CurrentState.LUISSubscriptionKey);
-            DataClient.OnConversationError += DataClient_OnConversationError;
-            DataClient.OnPartialResponseReceived += DataClient_OnPartialResponseReceived;
-            DataClient.OnResponseReceived += DataClient_OnResponseReceived;
-            DataClient.OnIntent += DataClient_OnIntent;
+            if (DataClient == null)
+            {
+                DataClient = SpeechRecognitionServiceFactory.CreateDataClientWithIntent(
+                    DefaultLocale,
+                    aCharacter.SpeechRecognitionSubscriptionKey,
+                    aCharacter.SpeechRecognitionSubscriptionKey,
+                    aCharacter.CurrentState.LUISAppId,
+                    aCharacter.CurrentState.LUISSubscriptionKey);
+                DataClient.OnConversationError += DataClient_OnConversationError;
+                DataClient.OnPartialResponseReceived += DataClient_OnPartialResponseReceived;
+                DataClient.OnResponseReceived += DataClient_OnResponseReceived;
+                DataClient.OnIntent += DataClient_OnIntent;
+            }
             return true;
         }
 
@@ -65,8 +68,7 @@ namespace ConversationsCore.Services
         {
             SpeechToTextErrorEvent(this, e.SpeechErrorText);
         }
-
-
+        
 
 
 
@@ -74,19 +76,20 @@ namespace ConversationsCore.Services
         {
             MessageEvent(this, "SpeechToTextBasic - FinishedProcessing");
             DataClient.EndAudio();
-            if (DataClient != null)
-            {
-                DataClient.Dispose();
-                DataClient = null;
-            }
-
 
         }
 
         public void MoreAudio(AudioBuffer aBuffer)
         {
-            MessageEvent(this, "SpeechToTextBasic - MoreAudio");
             DataClient.SendAudio(aBuffer.Buffer, aBuffer.BufferSize);
+        }
+
+        public void Dispose()
+        {
+            if (null != DataClient)
+            {
+                DataClient.Dispose();
+            }
         }
     }
 

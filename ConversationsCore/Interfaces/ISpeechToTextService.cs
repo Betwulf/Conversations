@@ -7,7 +7,7 @@ namespace ConversationsCore.Interfaces
     /// <summary>
     /// Listens to the streamed audio output and real-time directs to Speech Recognition + LUIS
     /// </summary>
-    public interface ISpeechToTextService
+    public interface ISpeechToTextService : IDisposable
     {
         event EventHandler<string> SpeechToTextCompletedEvent;
         event EventHandler<string> SpeechToTextErrorEvent;

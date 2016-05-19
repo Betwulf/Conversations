@@ -49,6 +49,7 @@ namespace ConversationsCore.Services
                         // Get more Audio data to send into byte buffer.
                         buf.Buffer = buffer;
                         buf.BufferSize = fileStream.Read(buffer, 0, buffer.Length);
+                        bytesRead = buf.BufferSize;
 
                         // Send of audio data to service. 
                         PartialRecordingEvent(this, buf);

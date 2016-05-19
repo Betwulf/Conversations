@@ -138,17 +138,23 @@ namespace Conversations
         {
             lstResponses.Items.Clear();
             SelectedIntentResponse = null;
-            SelectedState = (State)lstStates.SelectedItem;
-            foreach (var item in SelectedState.IntentResponseList)
+            if (lstStates.SelectedItem != null)
             {
-                lstResponses.Items.Add(item);
+                SelectedState = (State)lstStates.SelectedItem;
+                foreach (var item in SelectedState.IntentResponseList)
+                {
+                    lstResponses.Items.Add(item);
+                }
             }
         }
 
         private void lstResponses_SelectedValueChanged(object sender, EventArgs e)
         {
-            SelectedIntentResponse = (IntentResponse)lstResponses.SelectedItem;
-            prgResponseDetails.SelectedObject = SelectedIntentResponse;
+            if (lstResponses.SelectedItem != null)
+            {
+                SelectedIntentResponse = (IntentResponse)lstResponses.SelectedItem;
+                prgResponseDetails.SelectedObject = SelectedIntentResponse;
+            }
         }
     }
 }

@@ -87,7 +87,6 @@ namespace ConversationsCore.Services
 
         private void OnPartialRecordingEvent(object sender, AudioBuffer e)
         {
-            MessageEvent(this, "CharacterCoordinatorBasic - OnPartialRecordingEvent");
             SpeechToText.MoreAudio(e);
         }
 
@@ -96,6 +95,11 @@ namespace ConversationsCore.Services
             MessageEvent(this, "CharacterCoordinatorBasic - StopConversation");
             AudioController.StopRecording();
             return true;
+        }
+
+        public void Dispose()
+        {
+            SpeechToText.Dispose();
         }
     }
 }

@@ -12,11 +12,15 @@ using System.Windows.Forms;
 using ConversationsCore.DataObjects;
 using ConversationsCore.Audio;
 using ConversationsCore.Repository;
+using System.Threading;
 
 namespace Conversations
 {
     public partial class Form1 : Form
     {
+        private readonly SynchronizationContext synchronizationContext;
+
+
         CharacterCoordinatorBasic Coordinator;
         Character DefaultCharacter { get; set; }
         ConversationsRepository Rep { get; set; }
@@ -26,6 +30,7 @@ namespace Conversations
         //SampleAggregator sampler;
         public Form1()
         {
+            synchronizationContext = SynchronizationContext.Current;
             InitializeComponent();
             Rep = new ConversationsRepository();
 
@@ -127,8 +132,11 @@ namespace Conversations
 
         private void Message(string aMessage)
         {
-            Console.WriteLine(aMessage);
-            txtOutput.Text += aMessage + Environment.NewLine;
+            synchronizationContext.Post(new SendOrPostCallback(p =>
+            {
+                Console.WriteLine(aMessage);
+                txtOutput.Text += p.ToString() + Environment.NewLine;
+            }), aMessage);
         }
 
         private void btnEditData_Click(object sender, EventArgs e)
@@ -142,6 +150,11 @@ namespace Conversations
         {
             var form = new frmRecordAudio();
             form.ShowDialog();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Coordinator.Dispose();
         }
     }
 }
