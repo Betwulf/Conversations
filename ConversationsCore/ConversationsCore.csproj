@@ -83,7 +83,7 @@
     <Compile Include="Services\RecordAudioNAudio.cs" />
     <Compile Include="Services\ResponseFinderBasic.cs" />
     <Compile Include="Services\SpeechToTextBasic.cs" />
-    <Compile Include="Services\TextToSpeech.cs" />
+    <Compile Include="Services\TextToSpeechBasic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

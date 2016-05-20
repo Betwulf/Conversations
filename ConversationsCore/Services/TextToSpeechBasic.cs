@@ -11,7 +11,7 @@ using NAudio.Mixer;
 
 namespace ConversationsCore.Services
 {
-    public class TextToSpeech : ITextToSpeechService
+    public class TextToSpeechBasic : ITextToSpeechService
     {
         public event EventHandler<ConversationsErrorArgs> TextToSpeechErrorEvent = delegate { };
         public event EventHandler<Character> TextToSpeechPlayCompleteEvent = delegate { };

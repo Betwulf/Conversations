@@ -31,9 +31,7 @@ namespace ConversationsCore.Services
             RecordAudio = new RecordAudioNAudio();
             RecordAudio.FinishedRecordingEvent += OnRecordStop;
             RecordAudio.StartedRecordingEvent += OnRecordStart;
-            //RecordAudio.PartialRecordingEvent += OnRecordingData;
             RecordAudio.RecordAudioErrorEvent += OnAudioError;
-            //RecordAudio.MessageEvent += OnMessage;
             AudioSampler = new SampleAggregator(RecordAudio);
             AudioSampler.SampleEvent += OnSampleEvent;
             StartedTalking = false;
