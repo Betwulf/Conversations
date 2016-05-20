@@ -24,7 +24,7 @@ namespace ConversationsCore.DataObjects
         /// <summary>
         /// Relationship strength has to be at least equal to this value to match
         /// </summary>
-        public int RelationshipStrength { get; set; }
+        public int RelationshipStrengthNeeded { get; set; }
 
         /// <summary>
         /// Must match context flags in character
@@ -43,6 +43,17 @@ namespace ConversationsCore.DataObjects
        typeof(System.Drawing.Design.UITypeEditor))]
         [TypeConverter(typeof(CsvConverter))]
         public List<string> ContextToBeAdded { get; set; }
+
+        /// <summary>
+        /// This value will improve or weaken the relationship value of the character if this response is selected
+        /// </summary>
+        public int RelationshipStrengthToBeAltered { get; set; }
+
+        /// <summary>
+        /// If blank then stay on current state, otherwise, change the Character's CurrentState
+        /// </summary>
+        public string StateToBeSetNext { get; set; }
+
 
         /// <summary>
         /// If this is true, then only need to match on one entity value

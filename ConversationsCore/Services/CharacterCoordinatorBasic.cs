@@ -162,7 +162,11 @@ namespace ConversationsCore.Services
 
         public void Dispose()
         {
-            SpeechToText.Dispose();
+            if (SpeechToText != null)
+            {
+                SpeechToText.Dispose();
+                SpeechToText = null;
+            }
         }
     }
 }

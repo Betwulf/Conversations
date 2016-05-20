@@ -31,7 +31,7 @@ namespace ConversationsCore.Services
                 // Look for top RelationshipStrength that is under or equal to current value, matching intent and needed context flags
                 // Assumes the first intent in the json object is the highest scored intent
                 var responses = from item in aCharacter.CurrentState.IntentResponseList
-                                where item.RelationshipStrength <= aCharacter.RelationshipStrength
+                                where item.RelationshipStrengthNeeded <= aCharacter.RelationshipStrength
                                 where aCharacter.ContextFlags.All(x => item.ContextNeeded.Contains(x))
                                 where item.Intent == json.intents.First().intent
                                 group item by item.Intent into grp
@@ -39,7 +39,7 @@ namespace ConversationsCore.Services
                                 {
                                     Intent = grp.Key,
                                     Item = from top in grp
-                                           where top.RelationshipStrength == grp.Max(x => x.RelationshipStrength)
+                                           where top.RelationshipStrengthNeeded == grp.Max(x => x.RelationshipStrengthNeeded)
                                            select top
                                 };
                 var intent = responses.First().Item.FirstOrDefault();
