@@ -69,10 +69,13 @@ namespace ConversationsCore.DataObjects
         [TypeConverter(typeof(CsvConverter))]
         public List<string> EntityValues { get; set; }
 
+
         /// <summary>
-        /// Collection of wave files that can be played for this response.
-        /// Assume any can be picked at random?
+        /// The written version of what the audio response should say. Audio may contain several variations.
         /// </summary>
+        public string ResponseText { get; set; }
+
+
 
         public IntentResponse()
         {
@@ -86,6 +89,10 @@ namespace ConversationsCore.DataObjects
             return Id;
         }
 
+        /// <summary>
+        /// Collection of wave files that can be played for this response exist by convention in a directory 
+        /// Uniquely pathed to this instance. Assume any can be picked at random.
+        /// </summary>
         public string GetResponseDirectory(Repository.ConversationsRepository Rep, Character aChar, State currState)
         {
             return $"{Rep.CharacterDB.ClassDirectory}\\{aChar.Id}\\{currState.Id}\\{Id}";

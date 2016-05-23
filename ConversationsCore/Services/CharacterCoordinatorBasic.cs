@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ConversationsCore.DataObjects;
 using ConversationsCore.Interfaces;
+using ConversationsCore.Repository;
 
 namespace ConversationsCore.Services
 {
@@ -14,10 +15,11 @@ namespace ConversationsCore.Services
     public class CharacterCoordinatorBasic : ICharacterCoordinatorService
     {
         public IAudioControllerService AudioController { get; set; }
-        public ISpeechToTextService SpeechToText { get; set; }
+        public IInputSpeechToTextService SpeechToText { get; set; }
         public IResponseFinderService ResponseFinder { get; set; }
-        public ITextToSpeechService TextToSpeech { get; set; }
+        public IOutputTextToSpeechService TextToSpeech { get; set; }
 
+        public ConversationsRepository Rep { get; set; }
         public Character CurrentCharacter { get; set; }
 
         public event EventHandler<ConversationsErrorArgs> CharacterCoordinatorErrorEvent = delegate { };
@@ -29,12 +31,13 @@ namespace ConversationsCore.Services
         {
         }
 
-        public bool StartConversationAsync(Character aCharacter)
+        public bool StartConversationAsync(ConversationsRepository aRep, Character aCharacter)
         {
+            Rep = aRep;
             if (AudioController == null) AudioController = new AudioControllerWavefile("test.wav");
-            SpeechToText = new SpeechToTextBasic();
+            SpeechToText = new InputSpeechToTextBasic();
             ResponseFinder = new ResponseFinderBasic();
-            TextToSpeech = new TextToSpeechBasic();
+            TextToSpeech = new OutputTextToTextBasic();
 
             CurrentCharacter = aCharacter;
             // Start with the first state - should be default
@@ -84,10 +87,10 @@ namespace ConversationsCore.Services
             MessageEvent(this, $"ResponseFinderErrorEvent: {e.Message}");
         }
 
-        private void ResponseFinder_ResponseFoundEvent(object sender, string e)
+        private void ResponseFinder_ResponseFoundEvent(object sender, IntentResponse e)
         {
-            MessageEvent(this, e);
-            TextToSpeech.StartPlayingResponseAudioAsync(e, CurrentCharacter);
+            MessageEvent(this, $"ResponseFoundEvent: {e.Id}");
+            TextToSpeech.StartPlayingResponseAudioAsync(Rep, e, CurrentCharacter);
         }
 
         private void RecordAudio_MessageEvent(object sender, string e)

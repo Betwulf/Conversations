@@ -72,8 +72,8 @@
     <Compile Include="Interfaces\IRecordAudioService.cs" />
     <Compile Include="Interfaces\IRepositoryObject.cs" />
     <Compile Include="Interfaces\IResponseFinderService.cs" />
-    <Compile Include="Interfaces\ISpeechToTextService.cs" />
-    <Compile Include="Interfaces\ITextToSpeechService.cs" />
+    <Compile Include="Interfaces\IInputSpeechToTextService.cs" />
+    <Compile Include="Interfaces\IOutputTextToSpeechService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataObjects\State.cs" />
     <Compile Include="Services\AudioController.cs" />
@@ -82,8 +82,9 @@
     <Compile Include="Services\RecordAudioButReallyReadFromAWavefile.cs" />
     <Compile Include="Services\RecordAudioNAudio.cs" />
     <Compile Include="Services\ResponseFinderBasic.cs" />
-    <Compile Include="Services\SpeechToTextBasic.cs" />
-    <Compile Include="Services\TextToSpeechBasic.cs" />
+    <Compile Include="Services\InputSpeechToTextBasic.cs" />
+    <Compile Include="Services\OutputTextToSpeechBasic.cs" />
+    <Compile Include="Services\OutputTextToTextBasic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

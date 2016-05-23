@@ -15,11 +15,11 @@ namespace ConversationsCore.Services
 
         public int RecordingFrequency { get { return 44100; } }
 
-        public event EventHandler<Exception> FinishedRecordingEvent;
-        public event EventHandler<string> MessageEvent;
-        public event EventHandler<AudioBuffer> PartialRecordingEvent;
-        public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
-        public event EventHandler<int> StartedRecordingEvent;
+        public event EventHandler<Exception> FinishedRecordingEvent = delegate { };
+        public event EventHandler<string> MessageEvent = delegate { };
+        public event EventHandler<AudioBuffer> PartialRecordingEvent = delegate { };
+        public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent = delegate { };
+        public event EventHandler<int> StartedRecordingEvent = delegate { };
 
         public string WaveFilename { get; set; }
 
@@ -58,7 +58,7 @@ namespace ConversationsCore.Services
                 }
                 catch (Exception ex)
                 {
-                    RecordAudioErrorEvent(this, new ConversationsErrorArgs() { theException = ex });
+                    RecordAudioErrorEvent(this, new ConversationsErrorArgs(ex, null));
                 }
                 finally
                 {

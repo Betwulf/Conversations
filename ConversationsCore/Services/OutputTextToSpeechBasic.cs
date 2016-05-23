@@ -8,18 +8,30 @@ using ConversationsCore.Interfaces;
 using NAudio;
 using NAudio.Wave;
 using NAudio.Mixer;
+using System.IO;
+using ConversationsCore.Repository;
 
 namespace ConversationsCore.Services
 {
-    public class TextToSpeechBasic : ITextToSpeechService
+    public class OutputTextToSpeechBasic : IOutputTextToSpeechService
     {
         public event EventHandler<ConversationsErrorArgs> TextToSpeechErrorEvent = delegate { };
         public event EventHandler<Character> TextToSpeechPlayCompleteEvent = delegate { };
+        public event EventHandler<string> MessageEvent = delegate { };
 
         public Character CurrentCharacter { get; set; }
 
-        public bool StartPlayingResponseAudioAsync(string aWaveFilename, Character aCharacter)
+
+        public bool StartPlayingResponseAudioAsync(ConversationsRepository Rep, IntentResponse aResponse, Character aCharacter)
         {
+            var dir = aResponse.GetResponseDirectory(Rep, aCharacter, aCharacter.CurrentState);
+            MessageEvent(this, $"Found a match: {aResponse.Id}, looking in dir: {dir}");
+            // Randomly select a file in the directory
+            var files = Directory.EnumerateFiles(dir);
+            var rnd = new Random(DateTime.Now.Millisecond);
+            var aWaveFilename = files.ElementAt(rnd.Next(0, files.Count()));
+
+
             try
             {
                 CurrentCharacter = aCharacter;
@@ -32,7 +44,7 @@ namespace ConversationsCore.Services
             }
             catch (Exception ex)
             {
-                TextToSpeechErrorEvent(this, new ConversationsErrorArgs() { theException = ex, theCharacter = aCharacter });
+                TextToSpeechErrorEvent(this, new ConversationsErrorArgs(ex, aCharacter));
             }
             return false;
         }

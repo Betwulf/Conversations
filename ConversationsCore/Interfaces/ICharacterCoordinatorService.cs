@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using ConversationsCore.DataObjects;
-
+using ConversationsCore.Repository;
 
 namespace ConversationsCore.Interfaces
 {
@@ -20,7 +20,7 @@ namespace ConversationsCore.Interfaces
 
         event EventHandler<string> MessageEvent;
 
-        bool StartConversationAsync(Character aCharacter);
+        bool StartConversationAsync(ConversationsRepository Rep, Character aCharacter);
 
         bool StopConversationAsync(Character aCharacter);
 

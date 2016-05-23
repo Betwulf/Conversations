@@ -10,7 +10,7 @@ using Microsoft.ProjectOxford.SpeechRecognition;
 
 namespace ConversationsCore.Services
 {
-    public class SpeechToTextBasic : ISpeechToTextService
+    public class InputSpeechToTextBasic : IInputSpeechToTextService
     {
         // The Payload property of the SpeechIntentEventArgs class
         public event EventHandler<string> SpeechToTextCompletedEvent = delegate { };

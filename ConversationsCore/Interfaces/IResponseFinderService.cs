@@ -8,7 +8,7 @@ namespace ConversationsCore.Interfaces
 {
     public interface IResponseFinderService
     {
-        event EventHandler<string> ResponseFoundEvent;
+        event EventHandler<IntentResponse> ResponseFoundEvent;
         event EventHandler<string> MessageEvent;
         event EventHandler<Exception> ResponseFinderErrorEvent;
 

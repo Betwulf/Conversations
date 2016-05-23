@@ -14,7 +14,7 @@ namespace ConversationsCore.Services
     public class ResponseFinderBasic : IResponseFinderService
     {
         public event EventHandler<Exception> ResponseFinderErrorEvent = delegate { };
-        public event EventHandler<string> ResponseFoundEvent = delegate { };
+        public event EventHandler<IntentResponse> ResponseFoundEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
 
         private ConversationsRepository Rep { get; set; }
@@ -23,6 +23,26 @@ namespace ConversationsCore.Services
         {
             Rep = new ConversationsRepository();
         }
+
+        public void ModifyCharacterFromIntentResponse(Character aChar, IntentResponse aResponse)
+        {
+            // alter relationshipStrength
+            aChar.RelationshipStrength += aResponse.RelationshipStrengthToBeAltered;
+
+            // Add conversation context flag
+            foreach (var item in aResponse.ContextToBeAdded)
+            {
+                aChar.ContextFlags.Add(item);
+            }
+            // Assume StateToBeSetNext is "" if no state switching is needed, and assume no state is ""
+            var foundState = from state in aChar.StateList where state.Id == aResponse.StateToBeSetNext select state;
+            if (foundState.Any())
+            {
+                aChar.CurrentState = foundState.First();
+            }
+
+        }
+
         public bool StartProcessingIntentAsync(string SpeechIntentPayload, Character aCharacter)
         {
             try
@@ -49,13 +69,7 @@ namespace ConversationsCore.Services
                     // TODO: Fallback, for now error
                     throw new Exception($"Can't find a matching IntentResponse, CurrentState: {aCharacter.CurrentState}, Payload: {SpeechIntentPayload}");
                 }
-                var dir = intent.GetResponseDirectory(Rep, aCharacter, aCharacter.CurrentState);
-                MessageEvent(this, $"Found a match: {intent.Id}, looking in dir: {dir}");
-                // Randomly select a file in the directory
-                var files = Directory.EnumerateFiles(dir);
-                var rnd = new Random(DateTime.Now.Millisecond);
-                var filename = files.ElementAt(rnd.Next(0, files.Count()));
-                ResponseFoundEvent(this, filename);
+                ResponseFoundEvent(this, intent);
             }
             catch (Exception ex)
             {

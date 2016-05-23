@@ -113,7 +113,7 @@ namespace Conversations
             {
                 lblLight.Visible = true;
                 btnStart.Enabled = false;
-                Coordinator.StartConversationAsync(DefaultCharacter);
+                Coordinator.StartConversationAsync(Rep, DefaultCharacter);
                 //audio.StartRecordingAudioAsync();
             }
             catch (Exception ex)
