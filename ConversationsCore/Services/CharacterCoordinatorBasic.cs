@@ -59,12 +59,17 @@ namespace ConversationsCore.Services
             ResponseFinder.MessageEvent += ResponseFinder_MessageEvent;
             TextToSpeech.TextToSpeechErrorEvent += TextToSpeech_TextToSpeechErrorEvent;
             TextToSpeech.TextToSpeechPlayCompleteEvent += TextToSpeech_TextToSpeechPlayCompleteEvent;
+            TextToSpeech.MessageEvent += TextToSpeech_MessageEvent;
 
 
             AudioController.StartRecording();
             return true;
         }
 
+        private void TextToSpeech_MessageEvent(object sender, string e)
+        {
+            MessageEvent(this, e);
+        }
 
         private void TextToSpeech_TextToSpeechPlayCompleteEvent(object sender, Character e)
         {
