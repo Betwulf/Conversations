@@ -23,7 +23,7 @@ namespace ConversationsCore.Services
             }
             catch (Exception ex)
             {
-                TextToSpeechErrorEvent(this, new ConversationsErrorArgs(ex, aCharacter, MethodBase.GetCurrentMethod().Name));
+                TextToSpeechErrorEvent(this, new ConversationsErrorArgs(ex, aCharacter, $"{MethodBase.GetCurrentMethod().DeclaringType}.{MethodBase.GetCurrentMethod().Name}"));
             }
             return true;
         }

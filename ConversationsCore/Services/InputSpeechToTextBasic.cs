@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ConversationsCore.DataObjects;
 using ConversationsCore.Interfaces;
 using Microsoft.ProjectOxford.SpeechRecognition;
+using System.Reflection;
 
 namespace ConversationsCore.Services
 {
@@ -14,7 +15,7 @@ namespace ConversationsCore.Services
     {
         // The Payload property of the SpeechIntentEventArgs class
         public event EventHandler<string> SpeechToTextCompletedEvent = delegate { };
-        public event EventHandler<string> SpeechToTextErrorEvent = delegate { };
+        public event EventHandler<ConversationsErrorArgs> SpeechToTextErrorEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
 
         DataRecognitionClient DataClient { get; set; }
@@ -24,14 +25,14 @@ namespace ConversationsCore.Services
         }
         private SpeechRecognitionMode Mode
         {
-            get
-            {
-                return SpeechRecognitionMode.ShortPhrase;
-            }
+            get { return SpeechRecognitionMode.ShortPhrase; }
         }
+
+        Character TheCharacter;
 
         public bool StartProcessingAudioAsync(Character aCharacter)
         {
+            TheCharacter = aCharacter;
             if (DataClient == null)
             {
                 DataClient = SpeechRecognitionServiceFactory.CreateDataClientWithIntent(
@@ -66,7 +67,7 @@ namespace ConversationsCore.Services
 
         private void DataClient_OnConversationError(object sender, SpeechErrorEventArgs e)
         {
-            SpeechToTextErrorEvent(this, e.SpeechErrorText);
+            SpeechToTextErrorEvent(this, new ConversationsErrorArgs(new Exception(e.SpeechErrorText), TheCharacter, $"{MethodBase.GetCurrentMethod().DeclaringType}.{MethodBase.GetCurrentMethod().Name}"));
         }
         
 

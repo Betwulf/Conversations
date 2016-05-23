@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using ConversationsCore.DataObjects;
+using Microsoft.ProjectOxford.SpeechRecognition;
 
 namespace ConversationsCore.Interfaces
 {
@@ -10,7 +11,7 @@ namespace ConversationsCore.Interfaces
     public interface IInputSpeechToTextService : IDisposable
     {
         event EventHandler<string> SpeechToTextCompletedEvent;
-        event EventHandler<string> SpeechToTextErrorEvent;
+        event EventHandler<ConversationsErrorArgs> SpeechToTextErrorEvent;
         event EventHandler<string> MessageEvent;
 
         bool StartProcessingAudioAsync(Character aCharacter);

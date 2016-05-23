@@ -26,7 +26,7 @@ namespace ConversationsCore.Services
         public event EventHandler<bool> RecordOffEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
 
-        public AudioController()
+        public AudioController()    
         {
             RecordAudio = new RecordAudioNAudio();
             RecordAudio.FinishedRecordingEvent += OnRecordStop;

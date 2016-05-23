@@ -119,9 +119,9 @@ namespace ConversationsCore.Services
             ResponseFinder.StartProcessingIntentAsync(e, CurrentCharacter);
         }
 
-        private void SpeechToTextErrorEvent(object sender, string e)
+        private void SpeechToTextErrorEvent(object sender, ConversationsErrorArgs e)
         {
-            MessageEvent(this, e);
+            CharacterCoordinatorErrorEvent(this, e);
         }
 
 

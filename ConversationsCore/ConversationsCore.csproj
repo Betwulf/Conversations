@@ -62,6 +62,7 @@
     <Compile Include="DataObjects\IntentResponse.cs" />
     <Compile Include="DataObjects\ResponseJson.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
+    <Compile Include="Interfaces\IInputControllerService.cs" />
     <Compile Include="Repository\ConversationsClassRepository.cs" />
     <Compile Include="Repository\ConversationsRepository.cs" />
     <Compile Include="DataObjects\Character.cs" />
@@ -77,8 +78,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataObjects\State.cs" />
     <Compile Include="Services\AudioController.cs" />
+    <Compile Include="Services\AudioControllerTextfile.cs" />
     <Compile Include="Services\AudioControllerWavefile.cs" />
     <Compile Include="Services\CharacterCoordinatorBasic.cs" />
+    <Compile Include="Services\InputControllerBasic.cs" />
     <Compile Include="Services\RecordAudioButReallyReadFromAWavefile.cs" />
     <Compile Include="Services\RecordAudioNAudio.cs" />
     <Compile Include="Services\ResponseFinderBasic.cs" />
