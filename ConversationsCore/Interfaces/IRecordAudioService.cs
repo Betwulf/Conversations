@@ -14,13 +14,9 @@ namespace ConversationsCore.Interfaces
     public interface IRecordAudioService
     {
         event EventHandler<int> StartedRecordingEvent;
-
         event EventHandler<AudioBuffer> PartialRecordingEvent;
-
-        event EventHandler<Exception> FinishedRecordingEvent;
-
+        event EventHandler<bool> FinishedRecordingEvent;
         event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent;
-
         event EventHandler<string> MessageEvent;
 
         int RecordingFrequency { get; }

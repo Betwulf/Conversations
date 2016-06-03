@@ -77,7 +77,7 @@ namespace Conversations
             Message("OnStartedRecording");
         }
 
-        private void OnStopRecording(object sender, Exception e)
+        private void OnStopRecording(object sender, bool e)
         {
             Message("OnStop");
             lblLight.Visible = false;

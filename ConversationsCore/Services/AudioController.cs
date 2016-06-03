@@ -12,7 +12,7 @@ namespace ConversationsCore.Services
 {
     public class AudioController : IAudioControllerService
     {
-        public IRecordAudioService RecordAudio { get; set; }
+        protected IRecordAudioService RecordAudio { get; set; }
         public SampleAggregator AudioSampler { get; set; }
         bool IsRecording { get; set; }
         bool StartedTalking { get; set; }
@@ -21,26 +21,49 @@ namespace ConversationsCore.Services
 
 
         public event EventHandler<float> AudioLevelEvent = delegate { };
-        public event EventHandler<Exception> CompletedEvent = delegate { };
-        public event EventHandler<bool> RecordOnEvent = delegate { };
-        public event EventHandler<bool> RecordOffEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
+        public event EventHandler<int> StartedRecordingEvent = delegate { };
+        public event EventHandler<AudioBuffer> PartialRecordingEvent = delegate { };
+        public event EventHandler<bool> FinishedRecordingEvent = delegate { };
+        public event EventHandler<ConversationsErrorArgs> AudioControllerErrorEvent = delegate { };
 
         public AudioController()    
         {
             RecordAudio = new RecordAudioNAudio();
-            RecordAudio.FinishedRecordingEvent += OnRecordStop;
-            RecordAudio.StartedRecordingEvent += OnRecordStart;
-            RecordAudio.RecordAudioErrorEvent += OnAudioError;
+
+            RecordAudio.MessageEvent += RecordAudio_MessageEvent;
+            RecordAudio.PartialRecordingEvent += RecordAudio_PartialRecordingEvent;
+            RecordAudio.RecordAudioErrorEvent += RecordAudio_RecordAudioErrorEvent;
+            RecordAudio.FinishedRecordingEvent += RecordAudio_FinishedRecordingEvent;
+            RecordAudio.StartedRecordingEvent += RecordAudio_StartedRecordingEvent;
+
             AudioSampler = new SampleAggregator(RecordAudio);
             AudioSampler.SampleEvent += OnSampleEvent;
             StartedTalking = false;
         }
 
-        private void OnAudioError(object sender, ConversationsErrorArgs e)
+        private void RecordAudio_StartedRecordingEvent(object sender, int e)
+        {
+            StartedTalking = false;
+            IsRecording = true;
+        }
+
+        private void RecordAudio_RecordAudioErrorEvent(object sender, ConversationsErrorArgs e)
         {
             StopRecording();
+            AudioControllerErrorEvent(this, e);
         }
+
+        private void RecordAudio_PartialRecordingEvent(object sender, AudioBuffer e)
+        {
+            PartialRecordingEvent(this, e);
+        }
+
+        private void RecordAudio_MessageEvent(object sender, string e)
+        {
+            MessageEvent(this, e);
+        }
+
 
         /// <summary>
         /// This code TRIES to figure out when the speaker starts and stops talking, and 
@@ -82,17 +105,12 @@ namespace ConversationsCore.Services
             }
         }
 
-         void OnRecordStart(object sender, int e)
-        {
-            StartedTalking = false;
-            IsRecording = true;
-        }
 
-         void OnRecordStop(object sender, Exception e)
+         void RecordAudio_FinishedRecordingEvent(object sender, bool e)
         {
-            CompletedEvent(sender, e);
             StartedTalking = false;
             IsRecording = false;
+            FinishedRecordingEvent(sender, e);
         }
 
         public void StartRecording()

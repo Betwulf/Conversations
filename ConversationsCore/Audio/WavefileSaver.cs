@@ -34,7 +34,7 @@ namespace ConversationsCore.Audio
             recorder.FinishedRecordingEvent += OnFinishedRecording;
         }
 
-        private void OnFinishedRecording(object sender, Exception e)
+        private void OnFinishedRecording(object sender, bool e)
         {
             MessageEvent(this, "WavefileSaver.OnFinishedRecording");
             writer.Close();

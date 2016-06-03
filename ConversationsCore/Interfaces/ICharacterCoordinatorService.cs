@@ -10,7 +10,7 @@ namespace ConversationsCore.Interfaces
     /// </summary>
     public interface ICharacterCoordinatorService : IDisposable
     {
-        IAudioControllerService AudioController { get; set; }
+        IInputControllerService InputController { get; set; }
 
         event EventHandler<Character> ConversationStartedEvent;
 

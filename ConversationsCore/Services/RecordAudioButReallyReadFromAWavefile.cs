@@ -15,7 +15,7 @@ namespace ConversationsCore.Services
 
         public int RecordingFrequency { get { return 44100; } }
 
-        public event EventHandler<Exception> FinishedRecordingEvent = delegate { };
+        public event EventHandler<bool> FinishedRecordingEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
         public event EventHandler<AudioBuffer> PartialRecordingEvent = delegate { };
         public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent = delegate { };
@@ -63,7 +63,7 @@ namespace ConversationsCore.Services
                 finally
                 {
                     // We are done sending audio.  Final recognition results will arrive in OnResponseReceived event call.
-                    FinishedRecordingEvent(this, null);
+                    FinishedRecordingEvent(this, true);
                 }
             }
             return true;

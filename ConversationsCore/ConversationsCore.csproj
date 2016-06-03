@@ -82,6 +82,7 @@
     <Compile Include="Services\AudioControllerWavefile.cs" />
     <Compile Include="Services\CharacterCoordinatorBasic.cs" />
     <Compile Include="Services\InputControllerBasic.cs" />
+    <Compile Include="Services\InputTextfileToText.cs" />
     <Compile Include="Services\RecordAudioButReallyReadFromAWavefile.cs" />
     <Compile Include="Services\RecordAudioNAudio.cs" />
     <Compile Include="Services\ResponseFinderBasic.cs" />

@@ -15,7 +15,7 @@ namespace ConversationsCore.Services
 {
     public class RecordAudioNAudio : IRecordAudioService
     {
-        public event EventHandler<Exception> FinishedRecordingEvent = delegate { };
+        public event EventHandler<bool> FinishedRecordingEvent = delegate { };
         public event EventHandler<ConversationsErrorArgs> RecordAudioErrorEvent = delegate { };
         public event EventHandler<int> StartedRecordingEvent = delegate { };
         public event EventHandler<AudioBuffer> PartialRecordingEvent = delegate { };
@@ -130,7 +130,15 @@ namespace ConversationsCore.Services
         void OnRecordingStopped(object sender, StoppedEventArgs e)
         {
             IsRecording = false;
-            FinishedRecordingEvent(this, e.Exception);
+            if (e.Exception == null)
+            {
+                FinishedRecordingEvent(this, true);
+            }
+            else
+            {
+                RecordAudioErrorEvent(this, new ConversationsErrorArgs(e.Exception, null, "OnRecordingStopped"));
+                FinishedRecordingEvent(this, false);
+            }
         }
 
 

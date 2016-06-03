@@ -14,8 +14,7 @@ namespace ConversationsCore.Services
     /// </summary>
     public class CharacterCoordinatorBasic : ICharacterCoordinatorService
     {
-        public IAudioControllerService AudioController { get; set; }
-        public IInputSpeechToTextService SpeechToText { get; set; }
+        public IInputControllerService InputController { get; set; }
         public IResponseFinderService ResponseFinder { get; set; }
         public IOutputTextToSpeechService TextToSpeech { get; set; }
 
@@ -34,8 +33,7 @@ namespace ConversationsCore.Services
         public bool StartConversationAsync(ConversationsRepository aRep, Character aCharacter)
         {
             Rep = aRep;
-            if (AudioController == null) AudioController = new AudioControllerWavefile("test.wav");
-            SpeechToText = new InputSpeechToTextBasic();
+            if (InputController == null) InputController = new InputControllerBasic();
             ResponseFinder = new ResponseFinderBasic();
             TextToSpeech = new OutputTextToTextBasic();
 
@@ -45,15 +43,9 @@ namespace ConversationsCore.Services
             {
                 CurrentCharacter.CurrentState = CurrentCharacter.StateList.First();
             }
-            AudioController.RecordAudio.MessageEvent += RecordAudio_MessageEvent;
-            AudioController.RecordAudio.PartialRecordingEvent += OnPartialRecordingEvent;
-            AudioController.RecordAudio.RecordAudioErrorEvent += OnErrorEvent;
-            AudioController.RecordAudio.FinishedRecordingEvent += OnFinishedRecordingEvent;
-            AudioController.RecordAudio.StartedRecordingEvent += OnStartedRecordingEvent;
-            AudioController.MessageEvent += AudioController_MessageEvent;
-            SpeechToText.SpeechToTextCompletedEvent += OnSpeechToTextEvent;
-            SpeechToText.SpeechToTextErrorEvent += SpeechToTextErrorEvent;
-            SpeechToText.MessageEvent += SpeechToText_MessageEvent;
+            InputController.InputControllerCompletedEvent += InputController_InputControllerCompletedEvent;
+            InputController.MessageEvent += InputController_MessageEvent;
+            InputController.InputControllerErrorEvent += InputController_InputControllerErrorEvent;
             ResponseFinder.ResponseFoundEvent += ResponseFinder_ResponseFoundEvent;
             ResponseFinder.ResponseFinderErrorEvent += ResponseFinder_ResponseFinderErrorEvent;
             ResponseFinder.MessageEvent += ResponseFinder_MessageEvent;
@@ -61,9 +53,24 @@ namespace ConversationsCore.Services
             TextToSpeech.TextToSpeechPlayCompleteEvent += TextToSpeech_TextToSpeechPlayCompleteEvent;
             TextToSpeech.MessageEvent += TextToSpeech_MessageEvent;
 
-
-            AudioController.StartRecording();
+            InputController.StartGettingInput(Rep, CurrentCharacter, null);
             return true;
+        }
+
+        private void InputController_InputControllerErrorEvent(object sender, ConversationsErrorArgs e)
+        {
+            MessageEvent(this, $"InputControllerErrorEvent: {e.theException.Message}");
+        }
+
+        private void InputController_MessageEvent(object sender, string e)
+        {
+            MessageEvent(this, e);
+        }
+
+        private void InputController_InputControllerCompletedEvent(object sender, string e)
+        {
+            MessageEvent(this, e);
+            ResponseFinder.StartProcessingIntentAsync(e, CurrentCharacter);
         }
 
         private void TextToSpeech_MessageEvent(object sender, string e)
@@ -74,7 +81,7 @@ namespace ConversationsCore.Services
         private void TextToSpeech_TextToSpeechPlayCompleteEvent(object sender, Character e)
         {
             MessageEvent(this, "TextToSpeechPlayCompleteEvent");
-            AudioController.StartRecording();
+            InputController.StartGettingInput(Rep, CurrentCharacter, null);
         }
 
         private void TextToSpeech_TextToSpeechErrorEvent(object sender, ConversationsErrorArgs e)
@@ -98,82 +105,33 @@ namespace ConversationsCore.Services
             TextToSpeech.StartPlayingResponseAudioAsync(Rep, e, CurrentCharacter);
         }
 
-        private void RecordAudio_MessageEvent(object sender, string e)
-        {
-            MessageEvent(this, e);
-        }
-
-        private void AudioController_MessageEvent(object sender, string e)
-        {
-            MessageEvent(this, e);
-        }
-
-        private void SpeechToText_MessageEvent(object sender, string e)
-        {
-            MessageEvent(this, e);
-        }
-
-        private void OnSpeechToTextEvent(object sender, string e)
-        {
-            MessageEvent(this, e);
-            ResponseFinder.StartProcessingIntentAsync(e, CurrentCharacter);
-        }
-
-        private void SpeechToTextErrorEvent(object sender, ConversationsErrorArgs e)
-        {
-            CharacterCoordinatorErrorEvent(this, e);
-        }
 
 
-        private void OnStartedRecordingEvent(object sender, int e)
-        {
-            SpeechToText.StartProcessingAudioAsync(CurrentCharacter);
-        }
+        
 
-        private void OnFinishedRecordingEvent(object sender, Exception e)
-        {
-            MessageEvent(this, "CharacterCoordinatorBasic - OnFinishedRecordingEvent");
-            SpeechToText.FinishedProcessing();
-        }
-
-        private void OnErrorEvent(object sender, ConversationsErrorArgs e)
-        {
-            MessageEvent(this, e.theException.Message);
-        }
-
-        private void OnPartialRecordingEvent(object sender, AudioBuffer e)
-        {
-            SpeechToText.MoreAudio(e);
-        }
 
         public bool StopConversationAsync(Character aCharacter)
         {
             MessageEvent(this, "CharacterCoordinatorBasic - StopConversation");
-            AudioController.RecordAudio.MessageEvent -= RecordAudio_MessageEvent;
-            AudioController.RecordAudio.PartialRecordingEvent -= OnPartialRecordingEvent;
-            AudioController.RecordAudio.RecordAudioErrorEvent -= OnErrorEvent;
-            AudioController.RecordAudio.FinishedRecordingEvent -= OnFinishedRecordingEvent;
-            AudioController.MessageEvent -= AudioController_MessageEvent;
-            SpeechToText.SpeechToTextCompletedEvent -= OnSpeechToTextEvent;
-            SpeechToText.SpeechToTextErrorEvent -= SpeechToTextErrorEvent;
-            SpeechToText.MessageEvent -= SpeechToText_MessageEvent;
+            InputController.InputControllerCompletedEvent -= InputController_InputControllerCompletedEvent;
+            InputController.MessageEvent -= InputController_MessageEvent;
+            InputController.InputControllerErrorEvent -= InputController_InputControllerErrorEvent;
             ResponseFinder.ResponseFoundEvent -= ResponseFinder_ResponseFoundEvent;
             ResponseFinder.ResponseFinderErrorEvent -= ResponseFinder_ResponseFinderErrorEvent;
             ResponseFinder.MessageEvent -= ResponseFinder_MessageEvent;
             TextToSpeech.TextToSpeechErrorEvent -= TextToSpeech_TextToSpeechErrorEvent;
             TextToSpeech.TextToSpeechPlayCompleteEvent -= TextToSpeech_TextToSpeechPlayCompleteEvent;
-            AudioController.StopRecording();
-            SpeechToText.Dispose();
-            // ResponseFinder.STOP TODO: Make stops? Do we need to?
+            TextToSpeech.MessageEvent -= TextToSpeech_MessageEvent;
+            
             return true;
         }
 
         public void Dispose()
         {
-            if (SpeechToText != null)
+            if (InputController != null)
             {
-                SpeechToText.Dispose();
-                SpeechToText = null;
+                InputController.Dispose();
+                InputController = null;
             }
         }
     }
