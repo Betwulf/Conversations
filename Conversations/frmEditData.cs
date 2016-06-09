@@ -30,6 +30,11 @@ namespace Conversations
                 var chr = obj as Character;
                 Rep.CharacterDB.SaveOrUpdateAsync(chr);
             }
+            else if (obj is ConversationPartsList)
+            {
+                var parts = obj as ConversationPartsList;
+                Rep.ConversationPartsDB.SaveOrUpdateAsync(parts);
+            }
         }
 
         private void btnNewCharacter_Click(object sender, EventArgs e)
@@ -41,6 +46,12 @@ namespace Conversations
         private void btnLoad_Click(object sender, EventArgs e)
         {
             prgEdit.SelectedObject = Rep.CharacterDB.GetById(txtId.Text);
+        }
+
+        private void btnNewParts_Click(object sender, EventArgs e)
+        {
+            var chr = new ConversationPartsList();
+            prgEdit.SelectedObject = chr;
         }
     }
 }

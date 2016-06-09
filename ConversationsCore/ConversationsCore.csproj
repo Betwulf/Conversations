@@ -59,9 +59,11 @@
     <Compile Include="Audio\SampleAggregator.cs" />
     <Compile Include="Audio\WavefileSaver.cs" />
     <Compile Include="DataObjects\AudioBuffer.cs" />
+    <Compile Include="DataObjects\ConversationPartsList.cs" />
     <Compile Include="DataObjects\IntentResponse.cs" />
     <Compile Include="DataObjects\ResponseJson.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
+    <Compile Include="Helpers\JsonFileHelper.cs" />
     <Compile Include="Interfaces\IInputControllerService.cs" />
     <Compile Include="Repository\ConversationsClassRepository.cs" />
     <Compile Include="Repository\ConversationsRepository.cs" />
@@ -93,6 +95,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

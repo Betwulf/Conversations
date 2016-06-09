@@ -19,7 +19,7 @@ namespace ConversationsCore.Interfaces
         event EventHandler<string> MessageEvent;
 
 
-        void StartGettingInput(ConversationsRepository aRep, Character aCharacter, IAudioControllerService anAudioController);
+        void StartGettingInput(ConversationsRepository aRep, Character aCharacter, IAudioControllerService anAudioController, IInputSpeechToTextService aTextConversionService);
 
     }
 }

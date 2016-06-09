@@ -14,12 +14,15 @@ namespace ConversationsCore.Repository
 
         public ConversationsClassRepository<Character> CharacterDB { get; set; }
 
+        public ConversationsClassRepository<ConversationPartsList> ConversationPartsDB { get; set; }
+
         public ConversationsClassRepository<Keys> KeysDB { get; set; }
 
         public ConversationsRepository()
         {
             CharacterDB = new ConversationsClassRepository<Character>();
             KeysDB = new ConversationsClassRepository<Keys>();
+            ConversationPartsDB = new ConversationsClassRepository<ConversationPartsList>();
         }
 
     }

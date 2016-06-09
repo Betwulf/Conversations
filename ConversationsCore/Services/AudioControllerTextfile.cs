@@ -26,10 +26,8 @@ namespace ConversationsCore.Services
         {
             AudioLevelEvent(this, 1.0f);
             StartedRecordingEvent(this, 1);
-            MessageEvent(this, $"{MethodBase.GetCurrentMethod().DeclaringType}.{MethodBase.GetCurrentMethod().Name}");
             Task.Run(() =>
             {
-                MessageEvent(this, $"{MethodBase.GetCurrentMethod().DeclaringType}.{MethodBase.GetCurrentMethod().Name} - start");
                 Task.Delay(2000);
                 MessageEvent(this, $"{MethodBase.GetCurrentMethod().DeclaringType}.{MethodBase.GetCurrentMethod().Name} - end");
                 FinishedRecordingEvent(this, true);

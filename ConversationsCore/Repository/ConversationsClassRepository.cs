@@ -7,6 +7,7 @@ using System.Configuration;
 using Newtonsoft.Json;
 using System.IO;
 using ConversationsCore.Interfaces;
+using ConversationsCore.Helpers;
 
 namespace ConversationsCore.Repository
 {
@@ -130,16 +131,9 @@ namespace ConversationsCore.Repository
             }
             Directory.CreateDirectory(ClassDirectory); // Create Directory if it isn't already made
             string pathString = GetObjectFullFilename(id);
-            if (File.Exists(pathString))
-            {
-                T theDoc = JsonConvert.DeserializeObject<T>(File.ReadAllText(pathString));
-                if (isCached) Cache.Add(id, theDoc);
-                return theDoc;
-            }
-            else
-            {
-                return default(T);
-            }
+            T obj = JsonFileHelper<T>.GetFromFile(pathString);
+            if (isCached) Cache.Add(id, obj);
+            return obj;
         }
 
 

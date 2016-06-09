@@ -20,14 +20,17 @@ namespace ConversationsCore.Services
 
         public ConversationsRepository Rep { get; set; }
         public Character CurrentCharacter { get; set; }
+        public string ConversationId { get; set; }
+    
 
         public event EventHandler<ConversationsErrorArgs> CharacterCoordinatorErrorEvent = delegate { };
         public event EventHandler<Character> ConversationEndedEvent = delegate { };
         public event EventHandler<Character> ConversationStartedEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
 
-        public CharacterCoordinatorBasic()
+        public CharacterCoordinatorBasic(string aConversationId)
         {
+            ConversationId = aConversationId;
         }
 
         public bool StartConversationAsync(ConversationsRepository aRep, Character aCharacter)
@@ -35,7 +38,7 @@ namespace ConversationsCore.Services
             Rep = aRep;
             if (InputController == null) InputController = new InputControllerBasic();
             ResponseFinder = new ResponseFinderBasic();
-            TextToSpeech = new OutputTextToTextBasic();
+            TextToSpeech = new OutputTextToSpeechBasic();
 
             CurrentCharacter = aCharacter;
             // Start with the first state - should be default
@@ -53,8 +56,14 @@ namespace ConversationsCore.Services
             TextToSpeech.TextToSpeechPlayCompleteEvent += TextToSpeech_TextToSpeechPlayCompleteEvent;
             TextToSpeech.MessageEvent += TextToSpeech_MessageEvent;
 
-            InputController.StartGettingInput(Rep, CurrentCharacter, null);
+            CallStartGettingInput();
+
             return true;
+        }
+
+        private void CallStartGettingInput()
+        {
+            InputController.StartGettingInput(Rep, CurrentCharacter, new AudioControllerTextfile(), new InputTextfileToText(ConversationId));
         }
 
         private void InputController_InputControllerErrorEvent(object sender, ConversationsErrorArgs e)
@@ -81,7 +90,7 @@ namespace ConversationsCore.Services
         private void TextToSpeech_TextToSpeechPlayCompleteEvent(object sender, Character e)
         {
             MessageEvent(this, "TextToSpeechPlayCompleteEvent");
-            InputController.StartGettingInput(Rep, CurrentCharacter, null);
+            CallStartGettingInput();
         }
 
         private void TextToSpeech_TextToSpeechErrorEvent(object sender, ConversationsErrorArgs e)

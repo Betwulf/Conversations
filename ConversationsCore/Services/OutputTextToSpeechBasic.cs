@@ -25,7 +25,7 @@ namespace ConversationsCore.Services
         public bool StartPlayingResponseAudioAsync(ConversationsRepository Rep, IntentResponse aResponse, Character aCharacter)
         {
             var dir = aResponse.GetResponseDirectory(Rep, aCharacter, aCharacter.CurrentState);
-            MessageEvent(this, $"Found a match: {aResponse.Id}, looking in dir: {dir}");
+            MessageEvent(this, $"Found a match: {aResponse.Id}");
             // Randomly select a file in the directory
             var files = Directory.EnumerateFiles(dir);
             var rnd = new Random(DateTime.Now.Millisecond);

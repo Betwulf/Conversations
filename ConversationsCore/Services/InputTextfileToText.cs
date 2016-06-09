@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ConversationsCore.DataObjects;
 using System.Reflection;
+using System.IO;
+using Newtonsoft.Json;
+using ConversationsCore.Helpers;
+using ConversationsCore.Repository;
 
 namespace ConversationsCore.Services
 {
@@ -16,31 +20,31 @@ namespace ConversationsCore.Services
         public event EventHandler<ConversationsErrorArgs> SpeechToTextErrorEvent = delegate { };
 
 
+        public ConversationsRepository Rep { get; set; }
 
         public int NextInputIndex { get; set; }
 
+        public string ConversationId { get; set; }
 
-        List<string> SimulationInput;
 
-        public InputTextfileToText()
+        ConversationPartsList SimulationInputList;
+
+        public InputTextfileToText(string aConversationId)
         {
-            SimulationInput = new List<string>(){
-                "Hello",
-                "A beer please",
-                "Fuck off"
-            };
+            ConversationId = aConversationId;
             NextInputIndex = 0;
         }
 
-        private async Task<string> SimulateNextInput()
+        private async Task<ResponseJson> SimulateNextInput()
         {
             return await Task.Run(() =>
             {
-                NextInputIndex = NextInputIndex % 3; // loop
+                NextInputIndex = NextInputIndex % SimulationInputList.ConversationParts.Count;
                 Task.Delay(2000);
                 MessageEvent(this, $"{MethodBase.GetCurrentMethod().DeclaringType}.{MethodBase.GetCurrentMethod().Name}");
-                SpeechToTextCompletedEvent(this, SimulationInput[NextInputIndex++]);
-                return SimulationInput[NextInputIndex];
+                var stringResponse = JsonConvert.SerializeObject(SimulationInputList.ConversationParts[NextInputIndex++]);
+                SpeechToTextCompletedEvent(this, stringResponse);
+                return SimulationInputList.ConversationParts[NextInputIndex];
             });
         }
 
@@ -60,8 +64,10 @@ namespace ConversationsCore.Services
             
         }
 
-        public bool StartProcessingAudioAsync(Character aCharacter)
+        public bool StartProcessingAudioAsync(ConversationsRepository aRep, Character aCharacter)
         {
+            Rep = aRep;
+            SimulationInputList = Rep.ConversationPartsDB.GetById(ConversationId);
             SimulateNextInput();
             return true; 
         }

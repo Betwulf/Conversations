@@ -8,6 +8,7 @@ using ConversationsCore.DataObjects;
 using ConversationsCore.Interfaces;
 using Microsoft.ProjectOxford.SpeechRecognition;
 using System.Reflection;
+using ConversationsCore.Repository;
 
 namespace ConversationsCore.Services
 {
@@ -30,7 +31,7 @@ namespace ConversationsCore.Services
 
         Character TheCharacter;
 
-        public bool StartProcessingAudioAsync(Character aCharacter)
+        public bool StartProcessingAudioAsync(ConversationsRepository aRep, Character aCharacter)
         {
             TheCharacter = aCharacter;
             if (DataClient == null)

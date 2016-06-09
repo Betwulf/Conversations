@@ -44,7 +44,7 @@ namespace Conversations
             sampler = new SampleAggregator(audio);
             sampler.SampleEvent += OnSampleEvent;
             */
-            Coordinator = new CharacterCoordinatorBasic();
+            Coordinator = new CharacterCoordinatorBasic("test");
             Coordinator.CharacterCoordinatorErrorEvent += Coordinator_CharacterCoordinatorErrorEvent;
             Coordinator.ConversationStartedEvent += Coordinator_ConversationStartedEvent;
             Coordinator.ConversationEndedEvent += Coordinator_ConversationEndedEvent;

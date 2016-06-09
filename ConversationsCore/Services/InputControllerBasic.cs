@@ -20,7 +20,6 @@ namespace ConversationsCore.Services
         IInputSpeechToTextService speechToText;
         Character theCharacter;
         ConversationsRepository Rep;
-
         
         private void SpeechToText_MessageEvent(object sender, string e)
         {
@@ -44,7 +43,7 @@ namespace ConversationsCore.Services
 
         private void RecordAudio_StartedRecordingEvent(object sender, int e)
         {
-            speechToText.StartProcessingAudioAsync(theCharacter);
+            speechToText.StartProcessingAudioAsync(Rep, theCharacter);
         }
 
         private void RecordAudio_FinishedRecordingEvent(object sender, bool e)
@@ -71,31 +70,34 @@ namespace ConversationsCore.Services
             MessageEvent(this, e);
         }
 
-        public void StartGettingInput(ConversationsRepository aRep, Character aCharacter, IAudioControllerService anAudioController = null)
+        
+        public void StartGettingInput(ConversationsRepository aRep, Character aCharacter, IAudioControllerService anAudioController = null, IInputSpeechToTextService aTextConversionService = null)
         {
             // Save params
             theCharacter = aCharacter;
             Rep = aRep;
 
             // New only one AudioController, resources may be locked in
-            audioController = anAudioController;
             if (audioController == null)
             {
                 audioController = anAudioController == null ? new AudioControllerTextfile() : anAudioController;
+                audioController.AudioControllerErrorEvent += RecordAudio_RecordAudioErrorEvent;
+                audioController.AudioLevelEvent += AudioController_AudioLevelEvent;
+                audioController.FinishedRecordingEvent += RecordAudio_FinishedRecordingEvent;
+                audioController.PartialRecordingEvent += RecordAudio_PartialRecordingEvent;
+                audioController.StartedRecordingEvent += RecordAudio_StartedRecordingEvent;
+                audioController.MessageEvent += AudioController_MessageEvent;
             }
-                
-            speechToText = new InputTextfileToText();
 
-            audioController.AudioControllerErrorEvent += RecordAudio_RecordAudioErrorEvent;
-            audioController.AudioLevelEvent += AudioController_AudioLevelEvent;
-            audioController.FinishedRecordingEvent += RecordAudio_FinishedRecordingEvent;
-            audioController.PartialRecordingEvent += RecordAudio_PartialRecordingEvent;
-            audioController.MessageEvent += RecordAudio_MessageEvent;
-            audioController.StartedRecordingEvent += RecordAudio_StartedRecordingEvent;
-            audioController.MessageEvent += AudioController_MessageEvent;
-            speechToText.SpeechToTextCompletedEvent += SpeechToText_SpeechToTextCompletedEvent;
-            speechToText.SpeechToTextErrorEvent += SpeechToText_SpeechToTextErrorEvent;
-            speechToText.MessageEvent += SpeechToText_MessageEvent;
+
+            if (speechToText == null)
+            {
+                speechToText = aTextConversionService;
+                speechToText.SpeechToTextCompletedEvent += SpeechToText_SpeechToTextCompletedEvent;
+                speechToText.SpeechToTextErrorEvent += SpeechToText_SpeechToTextErrorEvent;
+                speechToText.MessageEvent += SpeechToText_MessageEvent;
+            }
+
 
             // GO
             audioController.StartRecording();

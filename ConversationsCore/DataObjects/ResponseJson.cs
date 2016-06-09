@@ -30,5 +30,11 @@ namespace ConversationsCore.DataObjects
         public List<Intent> intents { get; set; }
 
         public List<Entity> entities { get; set; }
+
+        public ResponseJson()
+        {
+            intents = new List<Intent>();
+            entities = new List<Entity>();
+        }
     }
 }
