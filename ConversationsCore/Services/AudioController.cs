@@ -46,6 +46,7 @@ namespace ConversationsCore.Services
         {
             StartedTalking = false;
             IsRecording = true;
+            StartedRecordingEvent(this, e);
         }
 
         private void RecordAudio_RecordAudioErrorEvent(object sender, ConversationsErrorArgs e)

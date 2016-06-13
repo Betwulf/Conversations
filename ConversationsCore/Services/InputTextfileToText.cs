@@ -18,6 +18,7 @@ namespace ConversationsCore.Services
         public event EventHandler<string> MessageEvent = delegate { };
         public event EventHandler<string> SpeechToTextCompletedEvent = delegate { };
         public event EventHandler<ConversationsErrorArgs> SpeechToTextErrorEvent = delegate { };
+        public event EventHandler<bool> SpeechToTextStarted = delegate { };
 
 
         public ConversationsRepository Rep { get; set; }
@@ -69,6 +70,7 @@ namespace ConversationsCore.Services
             Rep = aRep;
             SimulationInputList = Rep.ConversationPartsDB.GetById(ConversationId);
             SimulateNextInput();
+            SpeechToTextStarted(this, true);
             return true; 
         }
     }

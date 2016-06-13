@@ -11,6 +11,7 @@ namespace ConversationsCore.Interfaces
     /// </summary>
     public interface IInputSpeechToTextService : IDisposable
     {
+        event EventHandler<bool> SpeechToTextStarted;
         event EventHandler<string> SpeechToTextCompletedEvent;
         event EventHandler<ConversationsErrorArgs> SpeechToTextErrorEvent;
         event EventHandler<string> MessageEvent;

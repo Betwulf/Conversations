@@ -24,21 +24,21 @@ namespace ConversationsCore.Services
             Rep = new ConversationsRepository();
         }
 
-        public void ModifyCharacterFromIntentResponse(Character aChar, IntentResponse aResponse)
+        public void ModifyCharacterFromIntentResponse(Character aCharacter, IntentResponse aResponse)
         {
             // alter relationshipStrength
-            aChar.RelationshipStrength += aResponse.RelationshipStrengthToBeAltered;
+            aCharacter.RelationshipStrength += aResponse.RelationshipStrengthToBeAltered;
 
             // Add conversation context flag
             foreach (var item in aResponse.ContextToBeAdded)
             {
-                aChar.ContextFlags.Add(item);
+                aCharacter.ContextFlags.Add(item);
             }
             // Assume StateToBeSetNext is "" if no state switching is needed, and assume no state is ""
-            var foundState = from state in aChar.StateList where state.Id == aResponse.StateToBeSetNext select state;
+            var foundState = from state in aCharacter.StateList where state.Id == aResponse.StateToBeSetNext select state;
             if (foundState.Any())
             {
-                aChar.CurrentState = foundState.First();
+                aCharacter.CurrentState = foundState.First();
             }
 
         }
@@ -62,6 +62,7 @@ namespace ConversationsCore.Services
                                            where top.RelationshipStrengthNeeded == grp.Max(x => x.RelationshipStrengthNeeded)
                                            select top
                                 };
+                //TODO: The linq is wrong, should be matching item.ContextNeeded to ContextFlags not the other way around...
                 var intent = responses.First().Item.FirstOrDefault();
                 if (intent == null)
                 {
@@ -70,6 +71,7 @@ namespace ConversationsCore.Services
                     throw new Exception($"Can't find a matching IntentResponse, CurrentState: {aCharacter.CurrentState}, Payload: {SpeechIntentPayload}");
                 }
                 ResponseFoundEvent(this, intent);
+                ModifyCharacterFromIntentResponse(aCharacter, intent);
             }
             catch (Exception ex)
             {

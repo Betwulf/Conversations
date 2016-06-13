@@ -63,7 +63,7 @@ namespace ConversationsCore.Services
 
         private void CallStartGettingInput()
         {
-            InputController.StartGettingInput(Rep, CurrentCharacter, new AudioControllerTextfile(), new InputTextfileToText(ConversationId));
+            InputController.StartGettingInput(Rep, CurrentCharacter, new AudioControllerWavefile("test.wav"), new InputSpeechToTextBasic());
         }
 
         private void InputController_InputControllerErrorEvent(object sender, ConversationsErrorArgs e)

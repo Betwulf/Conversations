@@ -18,6 +18,7 @@ namespace ConversationsCore.Services
         public event EventHandler<string> SpeechToTextCompletedEvent = delegate { };
         public event EventHandler<ConversationsErrorArgs> SpeechToTextErrorEvent = delegate { };
         public event EventHandler<string> MessageEvent = delegate { };
+        public event EventHandler<bool> SpeechToTextStarted = delegate { };
 
         DataRecognitionClient DataClient { get; set; }
         private string DefaultLocale
@@ -46,7 +47,9 @@ namespace ConversationsCore.Services
                 DataClient.OnPartialResponseReceived += DataClient_OnPartialResponseReceived;
                 DataClient.OnResponseReceived += DataClient_OnResponseReceived;
                 DataClient.OnIntent += DataClient_OnIntent;
+                
             }
+            SpeechToTextStarted(this, true);
             return true;
         }
 
@@ -68,6 +71,7 @@ namespace ConversationsCore.Services
 
         private void DataClient_OnConversationError(object sender, SpeechErrorEventArgs e)
         {
+            MessageEvent(this, $"SpeechToTextBasic - DataClient_OnConversationError {e.SpeechErrorCode}, {e.SpeechErrorText}");
             SpeechToTextErrorEvent(this, new ConversationsErrorArgs(new Exception(e.SpeechErrorText), TheCharacter, $"{MethodBase.GetCurrentMethod().DeclaringType}.{MethodBase.GetCurrentMethod().Name}"));
         }
         
@@ -77,20 +81,33 @@ namespace ConversationsCore.Services
         public void FinishedProcessing()
         {
             MessageEvent(this, "SpeechToTextBasic - FinishedProcessing");
-            DataClient.EndAudio();
 
+            if (DataClient != null)
+            {
+                DataClient.EndAudio();
+            }
         }
 
         public void MoreAudio(AudioBuffer aBuffer)
         {
-            DataClient.SendAudio(aBuffer.Buffer, aBuffer.BufferSize);
+            if (DataClient != null)
+            {
+                DataClient.SendAudio(aBuffer.Buffer, aBuffer.BufferSize);
+            }
+            
         }
 
         public void Dispose()
         {
             if (null != DataClient)
             {
+                MessageEvent(this, "KILLING DataCient");
+                DataClient.OnConversationError -= DataClient_OnConversationError;
+                DataClient.OnPartialResponseReceived -= DataClient_OnPartialResponseReceived;
+                DataClient.OnResponseReceived -= DataClient_OnResponseReceived;
+                DataClient.OnIntent -= DataClient_OnIntent;
                 DataClient.Dispose();
+                DataClient = null;
             }
         }
     }

@@ -28,11 +28,14 @@ namespace ConversationsCore.Services
 
         private void SpeechToText_SpeechToTextErrorEvent(object sender, ConversationsErrorArgs e)
         {
+            speechToText.Dispose();
             InputControllerErrorEvent(this, e);
         }
 
         private void SpeechToText_SpeechToTextCompletedEvent(object sender, string e)
         {
+            speechToText.Dispose();
+
             InputControllerCompletedEvent(this, e);
         }
 
@@ -43,13 +46,11 @@ namespace ConversationsCore.Services
 
         private void RecordAudio_StartedRecordingEvent(object sender, int e)
         {
-            speechToText.StartProcessingAudioAsync(Rep, theCharacter);
         }
 
         private void RecordAudio_FinishedRecordingEvent(object sender, bool e)
         {
             audioController.StopRecording();
-            speechToText.Dispose();
             // ResponseFinder.STOP TODO: Make stops? Do we need to?
             MessageEvent(this, "InputController - OnFinishedRecordingEvent");
             speechToText.FinishedProcessing();
@@ -71,11 +72,20 @@ namespace ConversationsCore.Services
         }
 
         
-        public void StartGettingInput(ConversationsRepository aRep, Character aCharacter, IAudioControllerService anAudioController = null, IInputSpeechToTextService aTextConversionService = null)
+        public void StartGettingInput(ConversationsRepository aRep, Character aCharacter, IAudioControllerService anAudioController = null, IInputSpeechToTextService aSpeechConversionService = null)
         {
             // Save params
             theCharacter = aCharacter;
             Rep = aRep;
+
+            if (speechToText == null)
+            {
+                speechToText = aSpeechConversionService;
+                speechToText.SpeechToTextCompletedEvent += SpeechToText_SpeechToTextCompletedEvent;
+                speechToText.SpeechToTextErrorEvent += SpeechToText_SpeechToTextErrorEvent;
+                speechToText.MessageEvent += SpeechToText_MessageEvent;
+                speechToText.SpeechToTextStarted += SpeechToText_SpeechToTextStarted;
+            }
 
             // New only one AudioController, resources may be locked in
             if (audioController == null)
@@ -90,18 +100,16 @@ namespace ConversationsCore.Services
             }
 
 
-            if (speechToText == null)
-            {
-                speechToText = aTextConversionService;
-                speechToText.SpeechToTextCompletedEvent += SpeechToText_SpeechToTextCompletedEvent;
-                speechToText.SpeechToTextErrorEvent += SpeechToText_SpeechToTextErrorEvent;
-                speechToText.MessageEvent += SpeechToText_MessageEvent;
-            }
 
 
             // GO
-            audioController.StartRecording();
+            speechToText.StartProcessingAudioAsync(Rep, theCharacter);
 
+        }
+
+        private void SpeechToText_SpeechToTextStarted(object sender, bool e)
+        {
+            audioController.StartRecording();
         }
 
         private void AudioController_AudioLevelEvent(object sender, float e)
